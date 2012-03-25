@@ -2,6 +2,8 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QtSql>
+#include <dbmanager.h>
 
 namespace Ui {
 class MainWindow;
@@ -17,6 +19,9 @@ public:
     
 private:
     Ui::MainWindow *ui;
+    DBManager DataBase;
+private slots:
+    void lookTable(QSqlTableModel *model);
 };
 
 #endif // MAINWINDOW_H
