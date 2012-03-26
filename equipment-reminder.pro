@@ -12,9 +12,12 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    dbmanager.cpp
+    dbmanager.cpp \
+    addeventdialog.cpp
 
 HEADERS  += mainwindow.h \
-    dbmanager.h
+    dbmanager.h \
+    addeventdialog.h
 
-FORMS    += mainwindow.ui
+FORMS    += mainwindow.ui \
+    addeventdialog.ui

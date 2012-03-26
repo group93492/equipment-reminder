@@ -20,6 +20,7 @@ signals:
     void tableModel(QSqlTableModel *model);
 public slots:
     void sendModel();
+    void addEvent(QString cabinet, QString date, QString time, QString inf);
 };
 
 #endif // DBMANAGER_H

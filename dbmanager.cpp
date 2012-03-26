@@ -24,13 +24,13 @@ void DBManager::connectToBase()
             qDebug() << m_DataBase.lastError().text();
         QSqlQuery query;
         QString str = "CREATE TABLE " + m_TableName + " ( "
-                    "number INTEGER, "
-                    "cabinet INTEGER, "
-                    "date INTEGER, "
-                    "time INTEGER, "
+                    "cabinet TEXT, "
+                    "date TEXT, "
+                    "time TEXT, "
                     "inf TEXT "
                     ");";
-        query.exec(str);
+        if(!query.exec(str))
+            qDebug() << "Invalid sql query";
     }
 }
 
@@ -41,6 +41,21 @@ void DBManager::sendModel()
     model->select();
     model->setEditStrategy(QSqlTableModel::OnFieldChange);
     emit tableModel(model);
+}
+
+void DBManager::addEvent(QString cabinet, QString date, QString time, QString inf)
+{
+    QSqlQuery query;
+    QString str = QString("INSERT INTO %1 (cabinet, date, time, inf)"
+                          "VALUES ('%2', '%3', '%4', '%5');")
+            .arg(m_TableName)
+            .arg(cabinet)
+            .arg(date)
+            .arg(time)
+            .arg(inf);
+    if(!query.exec(str))
+        qDebug() << "Invalid sql query";
+    sendModel();
 }
 
 

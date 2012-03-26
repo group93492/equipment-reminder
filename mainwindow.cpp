@@ -6,9 +6,12 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    DataBase.connectToBase();
-    connect(&DataBase, SIGNAL(tableModel(QSqlTableModel*)), this, SLOT(lookTable(QSqlTableModel*)));
-    DataBase.sendModel();
+    m_eventDialog = new addeventDialog;
+    m_DataBase.connectToBase();
+    connect(&m_DataBase, SIGNAL(tableModel(QSqlTableModel*)), this, SLOT(lookTable(QSqlTableModel*)));
+    connect(m_eventDialog, SIGNAL(event(QString,QString,QString,QString)), &m_DataBase, SLOT(addEvent(QString,QString,QString,QString)));
+    m_DataBase.sendModel();
+
 }
 
 MainWindow::~MainWindow()
@@ -19,4 +22,9 @@ MainWindow::~MainWindow()
 void MainWindow::lookTable(QSqlTableModel *model)
 {
     ui->tableView->setModel(model);
+}
+
+void MainWindow::on_pushButton_clicked()
+{
+    m_eventDialog->show();
 }

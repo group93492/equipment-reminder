@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QtSql>
 #include <dbmanager.h>
+#include <addeventdialog.h>
 
 namespace Ui {
 class MainWindow;
@@ -19,9 +20,11 @@ public:
     
 private:
     Ui::MainWindow *ui;
-    DBManager DataBase;
+    DBManager m_DataBase;
+    addeventDialog *m_eventDialog;
 private slots:
     void lookTable(QSqlTableModel *model);
+    void on_pushButton_clicked();
 };
 
 #endif // MAINWINDOW_H
