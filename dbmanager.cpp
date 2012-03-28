@@ -10,6 +10,7 @@ DBManager::DBManager(QObject *parent) :
 
 void DBManager::connectToBase()
 {
+
     QFile file(m_DBName);
     if(file.exists())
     {
@@ -22,16 +23,25 @@ void DBManager::connectToBase()
         m_DataBase.setDatabaseName(m_DBName);
         if(!m_DataBase.open())
             qDebug() << m_DataBase.lastError().text();
-        QSqlQuery query;
         QString str = "CREATE TABLE " + m_TableName + " ( "
+                    "id INTEGER, "
                     "cabinet TEXT, "
                     "date TEXT, "
                     "time TEXT, "
                     "inf TEXT "
                     ");";
+        QSqlQuery query;
         if(!query.exec(str))
-            qDebug() << "Invalid sql query";
+            qDebug() << "Invalid sql query: " << query.lastError().text();
     }
+    QSqlQuery query;
+    QString str = "SELECT MAX(id) FROM " + m_TableName + ";";
+    if(!query.exec(str))
+        qDebug() << "Invalid sql query: " << query.lastError().text();
+    QSqlRecord rec;
+    query.next();
+    rec = query.record();
+    m_id = rec.value(0).toUInt() + 1;
 }
 
 void DBManager::sendModel()
@@ -46,16 +56,33 @@ void DBManager::sendModel()
 void DBManager::addEvent(QString cabinet, QString date, QString time, QString inf)
 {
     QSqlQuery query;
-    QString str = QString("INSERT INTO %1 (cabinet, date, time, inf)"
-                          "VALUES ('%2', '%3', '%4', '%5');")
+    QString str = QString("INSERT INTO %1 (id, cabinet, date, time, inf) "
+                          "VALUES ('%2', '%3', '%4', '%5', '%6');")
             .arg(m_TableName)
+            .arg(m_id)
             .arg(cabinet)
             .arg(date)
             .arg(time)
             .arg(inf);
     if(!query.exec(str))
-        qDebug() << "Invalid sql query";
+        qDebug() << "Invalid sql query: " << query.lastError().text();
+    m_id++;
     sendModel();
 }
 
-
+void DBManager::editEvent(quint8 id, QString cabinet, QString date, QString time, QString inf)
+{
+    QSqlQuery query;
+    QString str = QString("UPDATE %1 "
+                          "SET cabinet = '%2', date = '%3', time = '%4', inf = '%5' "
+                          "WHERE id = %6;")
+            .arg(m_TableName)
+            .arg(cabinet)
+            .arg(date)
+            .arg(time)
+            .arg(inf)
+            .arg(id);
+    if(!query.exec(str))
+        qDebug() << "Invalid sql query: " << query.lastError().text();
+    sendModel();
+}

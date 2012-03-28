@@ -27,17 +27,46 @@
      </rect>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton">
+   <widget class="QPushButton" name="addeventButton">
     <property name="geometry">
      <rect>
       <x>540</x>
       <y>10</y>
-      <width>95</width>
+      <width>111</width>
       <height>24</height>
      </rect>
     </property>
     <property name="text">
      <string>Добавить...</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="deleteeventButton">
+    <property name="geometry">
+     <rect>
+      <x>540</x>
+      <y>90</y>
+      <width>111</width>
+      <height>24</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Удалить</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="editeventButton">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>540</x>
+      <y>50</y>
+      <width>111</width>
+      <height>24</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Редактировать...</string>
     </property>
    </widget>
   </widget>

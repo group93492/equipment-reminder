@@ -13,6 +13,7 @@ private:
     QString m_TableName;
     QString m_DBName;
     QSqlDatabase m_DataBase;
+    quint8 m_id;
 public:
     explicit DBManager(QObject *parent = 0);
     void connectToBase();
@@ -21,6 +22,7 @@ signals:
 public slots:
     void sendModel();
     void addEvent(QString cabinet, QString date, QString time, QString inf);
+    void editEvent(quint8 id, QString cabinet, QString date, QString time, QString inf);
 };
 
 #endif // DBMANAGER_H

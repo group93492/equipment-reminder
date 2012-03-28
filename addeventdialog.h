@@ -15,7 +15,7 @@ class addeventDialog : public QDialog
     Q_OBJECT
     
 public:
-    explicit addeventDialog(QWidget *parent = 0);
+    explicit addeventDialog(QWidget *parent = 0, bool p = true);
     ~addeventDialog();
     
 private slots:
@@ -23,8 +23,14 @@ private slots:
 
 private:
     Ui::addeventDialog *ui;
+    quint8 m_id;
+    bool m_addDialog;
 signals:
-    void event(QString cabinet, QString date, QString time, QString inf);
+    void addEventSignal(QString cabinet, QString date, QString time, QString inf);
+    void editEventSignal(quint8 id, QString cabinet, QString date, QString time, QString inf);
+public slots:
+    void setElements(quint8 id, QString cabinet, QString date, QString time, QString inf);
+
 };
 
 #endif // ADDEVENTDIALOG_H

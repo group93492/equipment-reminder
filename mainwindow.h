@@ -21,10 +21,14 @@ public:
 private:
     Ui::MainWindow *ui;
     DBManager m_DataBase;
-    addeventDialog *m_eventDialog;
+    addeventDialog *m_addeventDialog;
+    addeventDialog *m_editeventDialog;
+    QModelIndex m_currentCell;
 private slots:
     void lookTable(QSqlTableModel *model);
-    void on_pushButton_clicked();
+    void on_addeventButton_clicked();
+    void on_tableView_clicked(const QModelIndex &index);
+    void on_editeventButton_clicked();
 };
 
 #endif // MAINWINDOW_H
