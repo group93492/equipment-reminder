@@ -86,3 +86,15 @@ void DBManager::editEvent(quint8 id, QString cabinet, QString date, QString time
         qDebug() << "Invalid sql query: " << query.lastError().text();
     sendModel();
 }
+
+void DBManager::deleteEvent(quint8 id)
+{
+    QSqlQuery query;
+    QString str = QString("DELETE FROM %1 "
+                          "WHERE id = %2;")
+            .arg(m_TableName)
+            .arg(id);
+    if(!query.exec(str))
+        qDebug() << "Invalid sql query: " << query.lastError().text();
+    sendModel();
+}

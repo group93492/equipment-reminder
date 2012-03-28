@@ -29,6 +29,9 @@ private slots:
     void on_addeventButton_clicked();
     void on_tableView_clicked(const QModelIndex &index);
     void on_editeventButton_clicked();
+    void on_deleteeventButton_clicked();
+signals:
+    void deleteEventSignal(quint8 id);
 };
 
 #endif // MAINWINDOW_H

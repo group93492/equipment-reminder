@@ -23,6 +23,7 @@ public slots:
     void sendModel();
     void addEvent(QString cabinet, QString date, QString time, QString inf);
     void editEvent(quint8 id, QString cabinet, QString date, QString time, QString inf);
+    void deleteEvent(quint8 id);
 };
 
 #endif // DBMANAGER_H

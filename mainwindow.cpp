@@ -13,6 +13,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(&m_DataBase, SIGNAL(tableModel(QSqlTableModel*)), this, SLOT(lookTable(QSqlTableModel*)));
     connect(m_addeventDialog, SIGNAL(addEventSignal(QString,QString,QString,QString)), &m_DataBase, SLOT(addEvent(QString,QString,QString,QString)));
     connect(m_editeventDialog, SIGNAL(editEventSignal(quint8,QString,QString,QString,QString)), &m_DataBase, SLOT(editEvent(quint8,QString,QString,QString,QString)));
+    connect(this, SIGNAL(deleteEventSignal(quint8)), &m_DataBase, SLOT(deleteEvent(quint8)));
     m_DataBase.sendModel();
     ui->tableView->hideColumn(0);
 }
@@ -35,6 +36,7 @@ void MainWindow::on_addeventButton_clicked()
 void MainWindow::on_tableView_clicked(const QModelIndex &index)
 {
     ui->editeventButton->setEnabled(true);
+    ui->deleteeventButton->setEnabled(true);
     m_currentCell = index;
     m_editeventDialog->setElements(m_currentCell.sibling(m_currentCell.row(), 0).data().toUInt(),
                                   m_currentCell.sibling(m_currentCell.row(), 1).data().toString(),
@@ -46,4 +48,11 @@ void MainWindow::on_tableView_clicked(const QModelIndex &index)
 void MainWindow::on_editeventButton_clicked()
 {
     m_editeventDialog->show();
+}
+
+void MainWindow::on_deleteeventButton_clicked()
+{
+    ui->editeventButton->setEnabled(false);
+    ui->deleteeventButton->setEnabled(false);
+    emit deleteEventSignal(m_currentCell.sibling(m_currentCell.row(), 0).data().toUInt());
 }
