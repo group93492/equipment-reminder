@@ -7,7 +7,6 @@ addeventDialog::addeventDialog(QWidget *parent, bool p) :
 {
     ui->setupUi(this);
     ui->dateEdit->setDate(QDate::currentDate());
-    ui->timeEdit->setTime(QTime::currentTime());
     m_addDialog = p;
 }
 

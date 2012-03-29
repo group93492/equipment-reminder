@@ -35,7 +35,8 @@ void DBManager::connectToBase()
             qDebug() << "Invalid sql query: " << query.lastError().text();
     }
     QSqlQuery query;
-    QString str = "SELECT MAX(id) FROM " + m_TableName + ";";
+    QString str = QString("SELECT MAX(id) FROM %1;")
+            .arg(m_TableName);
     if(!query.exec(str))
         qDebug() << "Invalid sql query: " << query.lastError().text();
     QSqlRecord rec;
@@ -55,6 +56,7 @@ void DBManager::sendModel()
 
 void DBManager::addEvent(QString cabinet, QString date, QString time, QString inf)
 {
+    m_id++;
     QSqlQuery query;
     QString str = QString("INSERT INTO %1 (id, cabinet, date, time, inf) "
                           "VALUES ('%2', '%3', '%4', '%5', '%6');")
@@ -66,8 +68,8 @@ void DBManager::addEvent(QString cabinet, QString date, QString time, QString in
             .arg(inf);
     if(!query.exec(str))
         qDebug() << "Invalid sql query: " << query.lastError().text();
-    m_id++;
     sendModel();
+    findComingEvents();
 }
 
 void DBManager::editEvent(quint8 id, QString cabinet, QString date, QString time, QString inf)
@@ -85,6 +87,7 @@ void DBManager::editEvent(quint8 id, QString cabinet, QString date, QString time
     if(!query.exec(str))
         qDebug() << "Invalid sql query: " << query.lastError().text();
     sendModel();
+    findComingEvents();
 }
 
 void DBManager::deleteEvent(quint8 id)
@@ -97,4 +100,29 @@ void DBManager::deleteEvent(quint8 id)
     if(!query.exec(str))
         qDebug() << "Invalid sql query: " << query.lastError().text();
     sendModel();
+    findComingEvents();
+}
+
+void DBManager::findComingEvents()
+{
+    QSqlQuery query;
+    QString str = QString("SELECT * FROM %1 "
+                          "WHERE time = (SELECT MIN(time) FROM %1 "
+                          "WHERE date = (SELECT MIN(date) FROM %1));")
+            .arg(m_TableName);
+    if(!query.exec(str))
+        qDebug() << "Invalid sql query: " << query.lastError().text();
+    QSqlRecord rec;
+    QList<events> List;
+    events tempEvent;
+    while(query.next())
+    {
+        rec = query.record();
+        tempEvent.cabinet = rec.value(1).toString();
+        tempEvent.date = rec.value(2).toDate();
+        tempEvent.time = rec.value(3).toTime();
+        tempEvent.inf = rec.value(4).toString();
+        List.append(tempEvent);
+    }
+    emit comingEvents(List);
 }

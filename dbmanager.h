@@ -6,6 +6,13 @@
 #include <QtSql>
 #include <QDebug>
 
+struct events{
+    QString cabinet;
+    QDate date;
+    QTime time;
+    QString inf;
+};
+
 class DBManager : public QObject
 {
     Q_OBJECT
@@ -24,6 +31,9 @@ public slots:
     void addEvent(QString cabinet, QString date, QString time, QString inf);
     void editEvent(quint8 id, QString cabinet, QString date, QString time, QString inf);
     void deleteEvent(quint8 id);
+    void findComingEvents();
+signals:
+    void comingEvents(QList<events> List);
 };
 
 #endif // DBMANAGER_H
