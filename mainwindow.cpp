@@ -6,7 +6,6 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    ui->tableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
     QStringList List;
     List << "cabinet" << "date" << "time";
     ui->comboBox->addItems(List);
