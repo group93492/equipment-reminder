@@ -30,6 +30,8 @@ private slots:
     void on_tableView_clicked(const QModelIndex &index);
     void on_editeventButton_clicked();
     void on_deleteeventButton_clicked();
+    void on_comboBox_currentIndexChanged(int index);
+
 signals:
     void deleteEventSignal(quint8 id);
 };

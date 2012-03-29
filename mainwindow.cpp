@@ -7,6 +7,10 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     ui->tableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    QStringList List;
+    List << "cabinet" << "date" << "time";
+    ui->comboBox->addItems(List);
+    ui->comboBox->setCurrentIndex(1);
     m_addeventDialog = new addeventDialog(this, true);
     m_editeventDialog = new addeventDialog(this, false);
     m_DataBase.connectToBase();
@@ -25,12 +29,15 @@ MainWindow::~MainWindow()
 
 void MainWindow::lookTable(QSqlTableModel *model)
 {
+    model->sort(ui->comboBox->currentIndex()+1, Qt::AscendingOrder);
     ui->tableView->setModel(model);
 }
 
 void MainWindow::on_addeventButton_clicked()
 {
     m_addeventDialog->show();
+    ui->editeventButton->setEnabled(false);
+    ui->deleteeventButton->setEnabled(false);
 }
 
 void MainWindow::on_tableView_clicked(const QModelIndex &index)
@@ -48,6 +55,8 @@ void MainWindow::on_tableView_clicked(const QModelIndex &index)
 void MainWindow::on_editeventButton_clicked()
 {
     m_editeventDialog->show();
+    ui->editeventButton->setEnabled(false);
+    ui->deleteeventButton->setEnabled(false);
 }
 
 void MainWindow::on_deleteeventButton_clicked()
@@ -55,4 +64,9 @@ void MainWindow::on_deleteeventButton_clicked()
     ui->editeventButton->setEnabled(false);
     ui->deleteeventButton->setEnabled(false);
     emit deleteEventSignal(m_currentCell.sibling(m_currentCell.row(), 0).data().toUInt());
+}
+
+void MainWindow::on_comboBox_currentIndexChanged(int index)
+{
+    ui->tableView->sortByColumn(index+1, Qt::AscendingOrder);
 }
