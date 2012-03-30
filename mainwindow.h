@@ -25,6 +25,7 @@ private:
     addeventDialog *m_addeventDialog;
     addeventDialog *m_editeventDialog;
     QModelIndex m_currentCell;
+    eventInformer m_informer;
 private slots:
     void lookTable(QSqlTableModel *model);
     void on_addeventButton_clicked();

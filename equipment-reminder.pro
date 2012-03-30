@@ -15,12 +15,15 @@ SOURCES += main.cpp\
         mainwindow.cpp \
     dbmanager.cpp \
     addeventdialog.cpp \
-    eventinformer.cpp
+    eventinformer.cpp \
+    eventform.cpp
 
 HEADERS  += mainwindow.h \
     dbmanager.h \
     addeventdialog.h \
-    eventinformer.h
+    eventinformer.h \
+    eventform.h
 
 FORMS    += mainwindow.ui \
-    addeventdialog.ui
+    addeventdialog.ui \
+    eventform.ui

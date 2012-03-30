@@ -12,6 +12,8 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->comboBox->setCurrentIndex(1);
     m_addeventDialog = new addeventDialog(this, true);
     m_editeventDialog = new addeventDialog(this, false);
+
+
     m_DataBase.connectToBase();
     connect(&m_DataBase, SIGNAL(tableModel(QSqlTableModel*)), this, SLOT(lookTable(QSqlTableModel*)));
     connect(m_addeventDialog, SIGNAL(addEventSignal(QString,QString,QString,QString)), &m_DataBase, SLOT(addEvent(QString,QString,QString,QString)));
