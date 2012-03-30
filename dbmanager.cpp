@@ -43,6 +43,7 @@ void DBManager::connectToBase()
     query.next();
     rec = query.record();
     m_id = rec.value(0).toUInt() + 1;
+    findComingEvents();
 }
 
 void DBManager::sendModel()
@@ -118,6 +119,7 @@ void DBManager::findComingEvents()
     while(query.next())
     {
         rec = query.record();
+        tempEvent.id = rec.value(0).toUInt();
         tempEvent.cabinet = rec.value(1).toString();
         tempEvent.date = rec.value(2).toDate();
         tempEvent.time = rec.value(3).toTime();

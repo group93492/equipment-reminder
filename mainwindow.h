@@ -3,8 +3,9 @@
 
 #include <QMainWindow>
 #include <QtSql>
-#include <dbmanager.h>
-#include <addeventdialog.h>
+#include "dbmanager.h"
+#include "addeventdialog.h"
+#include "eventinformer.h"
 
 namespace Ui {
 class MainWindow;

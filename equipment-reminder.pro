@@ -6,6 +6,7 @@
 
 QT       += core gui sql
 
+X11:REQUIRES = nas
 TARGET = equipment-reminder
 TEMPLATE = app
 
@@ -13,11 +14,13 @@ TEMPLATE = app
 SOURCES += main.cpp\
         mainwindow.cpp \
     dbmanager.cpp \
-    addeventdialog.cpp
+    addeventdialog.cpp \
+    eventinformer.cpp
 
 HEADERS  += mainwindow.h \
     dbmanager.h \
-    addeventdialog.h
+    addeventdialog.h \
+    eventinformer.h
 
 FORMS    += mainwindow.ui \
     addeventdialog.ui

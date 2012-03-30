@@ -7,6 +7,7 @@
 #include <QDebug>
 
 struct events{
+    quint8 id;
     QString cabinet;
     QDate date;
     QTime time;
