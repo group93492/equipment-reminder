@@ -22,6 +22,8 @@ private slots:
 
 private:
     Ui::eventForm *ui;
+signals:
+    void acceptSignal();
 };
 
 #endif // EVENTFORM_H

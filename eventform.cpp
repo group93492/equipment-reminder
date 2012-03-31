@@ -26,4 +26,5 @@ eventForm::~eventForm()
 void eventForm::on_pushButton_clicked()
 {
     close();
+    emit acceptSignal();
 }

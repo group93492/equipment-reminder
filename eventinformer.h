@@ -16,6 +16,7 @@ private:
     bool m_playSound;
     QString m_msgPattern;
     QString m_SoundPath;
+    QSound *m_sound;
     eventForm m_form;
 public:
     explicit eventInformer(QObject *parent = 0);
@@ -23,6 +24,7 @@ signals:
     void deleteEventSignal(quint8 id);
 public slots:
     void showEvent(QList<events> List);
+    void closeEvent();
 };
 
 #endif // EVENTINFORMER_H

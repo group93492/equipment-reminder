@@ -6,7 +6,6 @@
 
 QT       += core gui sql
 
-X11:REQUIRES = nas
 TARGET = equipment-reminder
 TEMPLATE = app
 

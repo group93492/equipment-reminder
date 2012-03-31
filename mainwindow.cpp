@@ -6,6 +6,28 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+
+    //create menu
+    QMenu *menuGeneral;
+    QMenu *menuSettings;
+    QMenu *menuAbout;
+    menuGeneral = ui->menuBar->addMenu(QString::fromLocal8Bit("Общее"));
+    menuSettings = ui->menuBar->addMenu(QString::fromLocal8Bit("Настройки"));
+    menuAbout = ui->menuBar->addMenu(QString::fromLocal8Bit("О программе"));
+    //general menu
+    menuGeneral->addAction(QString::fromLocal8Bit("Добавить событие..."), this, SLOT(on_addeventButton_clicked()));
+    m_editAction = menuGeneral->addAction(QString::fromLocal8Bit("Редактировать событие..."), this, SLOT(on_editeventButton_clicked()));
+    m_editAction->setEnabled(false);
+    m_deleteAction = menuGeneral->addAction(QString::fromLocal8Bit("Удалить событие"), this, SLOT(on_deleteeventButton_clicked()));
+    m_deleteAction->setEnabled(false);
+    menuGeneral->addSeparator();
+    menuGeneral->addAction(QString::fromLocal8Bit("Выход"), qApp, SLOT(quit()));
+    //settings menu
+
+    //about menu
+    menuAbout->addAction(QString::fromLocal8Bit("О Qt"), qApp, SLOT(aboutQt()));
+
+
     QStringList List;
     List << "cabinet" << "date" << "time";
     ui->comboBox->addItems(List);
@@ -25,6 +47,10 @@ MainWindow::MainWindow(QWidget *parent) :
 
 MainWindow::~MainWindow()
 {
+    delete m_addeventDialog;
+    delete m_editeventDialog;
+    delete m_editAction;
+    delete m_deleteAction;
     delete ui;
 }
 
@@ -45,6 +71,8 @@ void MainWindow::on_tableView_clicked(const QModelIndex &index)
 {
     ui->editeventButton->setEnabled(true);
     ui->deleteeventButton->setEnabled(true);
+    m_editAction->setEnabled(true);
+    m_deleteAction->setEnabled(true);
     m_currentCell = index;
     m_editeventDialog->setElements(m_currentCell.sibling(m_currentCell.row(), 0).data().toUInt(),
                                   m_currentCell.sibling(m_currentCell.row(), 1).data().toString(),
@@ -58,12 +86,16 @@ void MainWindow::on_editeventButton_clicked()
     m_editeventDialog->show();
     ui->editeventButton->setEnabled(false);
     ui->deleteeventButton->setEnabled(false);
+    m_editAction->setEnabled(false);
+    m_deleteAction->setEnabled(false);
 }
 
 void MainWindow::on_deleteeventButton_clicked()
 {
     ui->editeventButton->setEnabled(false);
     ui->deleteeventButton->setEnabled(false);
+    m_editAction->setEnabled(false);
+    m_deleteAction->setEnabled(false);
     emit deleteEventSignal(m_currentCell.sibling(m_currentCell.row(), 0).data().toUInt());
 }
 
