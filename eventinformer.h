@@ -26,7 +26,7 @@ signals:
 public slots:
     void showEvent(QList<events> List);
     void closeEvent();
-    void setSettings(structSettings s);
+    void setSettings(structSettings *s);
 };
 
 #endif // EVENTINFORMER_H

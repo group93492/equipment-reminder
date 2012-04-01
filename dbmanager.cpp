@@ -44,10 +44,14 @@ void DBManager::connectToBase()
     findComingEvents();
 }
 
-void DBManager::setSettings(structSettings s)
+void DBManager::setSettings(structSettings *s)
 {
-    m_DBName = s.DBPath;
-    m_TableName = s.TableName;
+    if(m_DataBase.isOpen())
+        m_DataBase.close();
+    m_DBName = s->DBPath;
+    m_TableName = s->TableName;
+    connectToBase();
+    sendModel();
 }
 
 void DBManager::sendModel()

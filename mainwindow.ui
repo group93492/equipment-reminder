@@ -20,10 +20,10 @@
     </property>
     <property name="geometry">
      <rect>
-      <x>10</x>
+      <x>0</x>
       <y>10</y>
-      <width>501</width>
-      <height>251</height>
+      <width>521</width>
+      <height>351</height>
      </rect>
     </property>
     <property name="editTriggers">

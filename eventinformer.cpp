@@ -11,12 +11,17 @@ eventInformer::eventInformer(QObject *parent) :
     m_sound = new QSound(m_SoundPath);
 }
 
-void eventInformer::setSettings(structSettings s)
+void eventInformer::setSettings(structSettings *s)
 {
-    m_showDialog = s.showDialog;
-    m_playSound = s.playSound;
-    m_msgPattern = s.msgPattern;
-    m_SoundPath = s.SoundPath;
+    m_showDialog = s->showDialog;
+    m_playSound = s->playSound;
+    m_msgPattern = s->msgPattern;
+    if(m_SoundPath != s->SoundPath)
+    {
+        m_SoundPath = s->SoundPath;
+        delete m_sound;
+        m_sound = new QSound(m_SoundPath);
+    }
 }
 
 void eventInformer::showEvent(QList<events> List)

@@ -9,6 +9,7 @@ MainWindow::MainWindow(QWidget *parent) :
     m_addeventDialog = new addeventDialog(this, true);
     m_editeventDialog = new addeventDialog(this, false);
     m_settingsDialog = new settingsDialog(this);
+    m_settings = new structSettings;
     //create menu
     QMenu *menuGeneral;
     QMenu *menuSettings;
@@ -33,20 +34,21 @@ MainWindow::MainWindow(QWidget *parent) :
     List << "cabinet" << "date" << "time";
     ui->comboBox->addItems(List);
     ui->comboBox->setCurrentIndex(1);
-
+    //connect section
     connect(&m_DataBase, SIGNAL(tableModel(QSqlTableModel*)), this, SLOT(lookTable(QSqlTableModel*)));
     connect(m_addeventDialog, SIGNAL(addEventSignal(QString,QString,QString,QString)), &m_DataBase, SLOT(addEvent(QString,QString,QString,QString)));
     connect(m_editeventDialog, SIGNAL(editEventSignal(quint8,QString,QString,QString,QString)), &m_DataBase, SLOT(editEvent(quint8,QString,QString,QString,QString)));
     connect(this, SIGNAL(deleteEventSignal(quint8)), &m_DataBase, SLOT(deleteEvent(quint8)));
-
+    connect(m_settingsDialog, SIGNAL(settingsSignal(structSettings*)), &m_DataBase, SLOT(setSettings(structSettings*)));
+    connect(m_settingsDialog, SIGNAL(settingsSignal(structSettings*)), &m_informer, SLOT(setSettings(structSettings*)));
     //settings initialization
     QSettings set("settings", QSettings::IniFormat);
-    m_settings.TableName = set.value("Database/Tablename", "events").toString();
-    m_settings.DBPath = set.value("Database/Path", "ReminderDB").toString();
-    m_settings.SoundPath = set.value("Informer/SoundPath", "").toString();
-    m_settings.msgPattern = set.value("Informer/MsgPattern", QString::fromLocal8Bit("%1 в %2 надо быть в кабинете %3, заметки: %4")).toString();
-    m_settings.playSound = set.value("Informer/Sound", false).toBool();
-    m_settings.showDialog = set.value("Informer/Dialog", true).toBool();
+    m_settings->TableName = set.value("Database/Tablename", "events").toString();
+    m_settings->DBPath = set.value("Database/Path", "ReminderDB").toString();
+    m_settings->SoundPath = set.value("Informer/SoundPath", "").toString();
+    m_settings->msgPattern = set.value("Informer/MsgPattern", QString::fromLocal8Bit("%1 в %2 надо быть в кабинете %3, заметки: %4")).toString();
+    m_settings->playSound = set.value("Informer/Sound", false).toBool();
+    m_settings->showDialog = set.value("Informer/Dialog", true).toBool();
     m_settingsDialog->setSettings(m_settings);
     m_informer.setSettings(m_settings);
     m_DataBase.setSettings(m_settings);
@@ -63,6 +65,7 @@ MainWindow::~MainWindow()
     delete m_editAction;
     delete m_deleteAction;
     delete m_settingsDialog;
+    delete m_settings;
     delete ui;
 }
 
