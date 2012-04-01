@@ -7,6 +7,7 @@
 #include <QString>
 #include "dbmanager.h"
 #include "eventform.h"
+#include "settingsdialog.h"
 
 class eventInformer : public QObject
 {
@@ -20,6 +21,7 @@ private:
     eventForm m_form;
 public:
     explicit eventInformer(QObject *parent = 0);
+    void setSettings(structSettings s);
 signals:
     void deleteEventSignal(quint8 id);
 public slots:

@@ -8,10 +8,15 @@ eventInformer::eventInformer(QObject *parent) :
     m_form.move((QApplication::desktop()->width() - m_form.width()) / 2,
                 (QApplication::desktop()->height() - m_form.height()) / 2);
     connect(&m_form, SIGNAL(acceptSignal()), this, SLOT(closeEvent()));
-    m_msgPattern = QString::fromLocal8Bit("%1 в %2 надо быть в кабинете %3, заметки: %4");  //NEED FIX!
-    m_sound = new QSound("ringin.wav");
-    m_showDialog = true;
-    m_playSound - true;
+    m_sound = new QSound(m_SoundPath);
+}
+
+void eventInformer::setSettings(structSettings s)
+{
+    m_showDialog = s.showDialog;
+    m_playSound = s.playSound;
+    m_msgPattern = s.msgPattern;
+    m_SoundPath = s.SoundPath;
 }
 
 void eventInformer::showEvent(QList<events> List)

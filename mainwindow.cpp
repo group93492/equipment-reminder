@@ -6,7 +6,9 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-
+    m_addeventDialog = new addeventDialog(this, true);
+    m_editeventDialog = new addeventDialog(this, false);
+    m_settingsDialog = new settingsDialog(this);
     //create menu
     QMenu *menuGeneral;
     QMenu *menuSettings;
@@ -23,24 +25,33 @@ MainWindow::MainWindow(QWidget *parent) :
     menuGeneral->addSeparator();
     menuGeneral->addAction(QString::fromLocal8Bit("Выход"), qApp, SLOT(quit()));
     //settings menu
-
+    menuSettings->addAction(QString::fromLocal8Bit("Настройки..."), m_settingsDialog, SLOT(show()));
     //about menu
     menuAbout->addAction(QString::fromLocal8Bit("О Qt"), qApp, SLOT(aboutQt()));
-
-
+    //combobox
     QStringList List;
     List << "cabinet" << "date" << "time";
     ui->comboBox->addItems(List);
     ui->comboBox->setCurrentIndex(1);
-    m_addeventDialog = new addeventDialog(this, true);
-    m_editeventDialog = new addeventDialog(this, false);
 
-
-    m_DataBase.connectToBase();
     connect(&m_DataBase, SIGNAL(tableModel(QSqlTableModel*)), this, SLOT(lookTable(QSqlTableModel*)));
     connect(m_addeventDialog, SIGNAL(addEventSignal(QString,QString,QString,QString)), &m_DataBase, SLOT(addEvent(QString,QString,QString,QString)));
     connect(m_editeventDialog, SIGNAL(editEventSignal(quint8,QString,QString,QString,QString)), &m_DataBase, SLOT(editEvent(quint8,QString,QString,QString,QString)));
     connect(this, SIGNAL(deleteEventSignal(quint8)), &m_DataBase, SLOT(deleteEvent(quint8)));
+
+    //settings initialization
+    QSettings set("settings", QSettings::IniFormat);
+    m_settings.TableName = set.value("Database/Tablename", "events").toString();
+    m_settings.DBPath = set.value("Database/Path", "ReminderDB").toString();
+    m_settings.SoundPath = set.value("Informer/SoundPath", "").toString();
+    m_settings.msgPattern = set.value("Informer/MsgPattern", QString::fromLocal8Bit("%1 в %2 надо быть в кабинете %3, заметки: %4")).toString();
+    m_settings.playSound = set.value("Informer/Sound", false).toBool();
+    m_settings.showDialog = set.value("Informer/Dialog", true).toBool();
+    m_settingsDialog->setSettings(m_settings);
+    m_informer.setSettings(m_settings);
+    m_DataBase.setSettings(m_settings);
+
+    m_DataBase.connectToBase();
     m_DataBase.sendModel();
     ui->tableView->hideColumn(0);
 }
@@ -51,6 +62,7 @@ MainWindow::~MainWindow()
     delete m_editeventDialog;
     delete m_editAction;
     delete m_deleteAction;
+    delete m_settingsDialog;
     delete ui;
 }
 

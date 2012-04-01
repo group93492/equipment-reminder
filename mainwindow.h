@@ -6,6 +6,7 @@
 #include "dbmanager.h"
 #include "addeventdialog.h"
 #include "eventinformer.h"
+#include "settingsdialog.h"
 
 namespace Ui {
 class MainWindow;
@@ -24,10 +25,12 @@ private:
     DBManager m_DataBase;
     addeventDialog *m_addeventDialog;
     addeventDialog *m_editeventDialog;
+    settingsDialog *m_settingsDialog;
     QModelIndex m_currentCell;
     eventInformer m_informer;
     QAction *m_editAction;
     QAction *m_deleteAction;
+    structSettings m_settings;
 private slots:
     void lookTable(QSqlTableModel *model);
     void on_addeventButton_clicked();

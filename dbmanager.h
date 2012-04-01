@@ -5,6 +5,7 @@
 #include <QFile>
 #include <QtSql>
 #include <QDebug>
+#include "settingsdialog.h"
 
 struct events{
     quint8 id;
@@ -25,6 +26,7 @@ private:
 public:
     explicit DBManager(QObject *parent = 0);
     void connectToBase();
+    void setSettings(structSettings s);
 signals:
     void tableModel(QSqlTableModel *model);
 public slots:

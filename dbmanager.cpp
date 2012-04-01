@@ -3,8 +3,6 @@
 DBManager::DBManager(QObject *parent) :
     QObject(parent)
 {
-    m_DBName = "ReminderDB";
-    m_TableName = "Events";
     m_DataBase = QSqlDatabase::addDatabase("QSQLITE");
 }
 
@@ -44,6 +42,12 @@ void DBManager::connectToBase()
     rec = query.record();
     m_id = rec.value(0).toUInt() + 1;
     findComingEvents();
+}
+
+void DBManager::setSettings(structSettings s)
+{
+    m_DBName = s.DBPath;
+    m_TableName = s.TableName;
 }
 
 void DBManager::sendModel()
