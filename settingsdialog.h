@@ -4,6 +4,7 @@
 #include <QDialog>
 #include <QFileDialog>
 #include <QSound>
+#include <QSettings>
 
 struct structSettings
 {
@@ -32,6 +33,8 @@ private slots:
     void on_soundPathToolButton_clicked();
 
     void on_dbToolButton_clicked();
+
+    void on_buttonBox_accepted();
 
 private:
     Ui::settingsDialog *ui;

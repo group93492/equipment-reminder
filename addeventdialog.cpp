@@ -8,6 +8,10 @@ addeventDialog::addeventDialog(QWidget *parent, bool p) :
     ui->setupUi(this);
     ui->dateEdit->setDate(QDate::currentDate());
     m_addDialog = p;
+    if(p)
+        this->setWindowTitle(QString::fromLocal8Bit("Добавить событие"));
+    else
+        this->setWindowTitle(QString::fromLocal8Bit("Редактировать событие"));
 }
 
 addeventDialog::~addeventDialog()

@@ -21,12 +21,12 @@ private:
     eventForm m_form;
 public:
     explicit eventInformer(QObject *parent = 0);
-    void setSettings(structSettings s);
 signals:
     void deleteEventSignal(quint8 id);
 public slots:
     void showEvent(QList<events> List);
     void closeEvent();
+    void setSettings(structSettings s);
 };
 
 #endif // EVENTINFORMER_H

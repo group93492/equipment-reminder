@@ -26,11 +26,11 @@ private:
 public:
     explicit DBManager(QObject *parent = 0);
     void connectToBase();
-    void setSettings(structSettings s);
 signals:
     void tableModel(QSqlTableModel *model);
 public slots:
     void sendModel();
+    void setSettings(structSettings s);
     void addEvent(QString cabinet, QString date, QString time, QString inf);
     void editEvent(quint8 id, QString cabinet, QString date, QString time, QString inf);
     void deleteEvent(quint8 id);
