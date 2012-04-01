@@ -11,6 +11,11 @@ eventInformer::eventInformer(QObject *parent) :
     m_sound = new QSound(m_SoundPath);
 }
 
+eventInformer::~eventInformer()
+{
+    delete m_sound;
+}
+
 void eventInformer::setSettings(structSettings *s)
 {
     m_showDialog = s->showDialog;

@@ -6,6 +6,7 @@ settingsDialog::settingsDialog(QWidget *parent) :
     ui(new Ui::settingsDialog)
 {
     ui->setupUi(this);
+    m_currentSettings = new structSettings;
     if(!QSound::isAvailable())
     {
         ui->soundPathEdit->setEnabled(false);
@@ -18,11 +19,13 @@ settingsDialog::settingsDialog(QWidget *parent) :
 
 settingsDialog::~settingsDialog()
 {
+    delete m_currentSettings;
     delete ui;
 }
 
 void settingsDialog::setSettings(structSettings *s)
 {
+    m_currentSettings = s;
     ui->soundPathEdit->setText(s->SoundPath);
     ui->soundCheckBox->setChecked(s->playSound);
     ui->messageCheckBox->setChecked(s->showDialog);
@@ -53,25 +56,33 @@ void settingsDialog::on_dbToolButton_clicked()
 void settingsDialog::on_buttonBox_accepted()
 {
     QSettings settings("settings", QSettings::IniFormat);
-    structSettings *s;
-    s = new structSettings;
-    s->TableName = ui->dbTableLineEdit->text();
-    s->DBPath = ui->dbPathLineEdit->text();
-    s->SoundPath = ui->soundPathEdit->text();
-    s->msgPattern = ui->patternLineEdit->text();
-    s->playSound = ui->soundCheckBox->isChecked();
-    s->showDialog = ui->messageCheckBox->isChecked();
-    settings.setValue("Database/Tablename", s->TableName);
-    settings.setValue("Database/Path", s->DBPath);
-    settings.setValue("Informer/SoundPath", s->SoundPath);
-    settings.setValue("Informer/MsgPattern", s->msgPattern);
-    if(s->playSound)
+    m_currentSettings->TableName = ui->dbTableLineEdit->text();
+    m_currentSettings->DBPath = ui->dbPathLineEdit->text();
+    m_currentSettings->SoundPath = ui->soundPathEdit->text();
+    m_currentSettings->msgPattern = ui->patternLineEdit->text();
+    m_currentSettings->playSound = ui->soundCheckBox->isChecked();
+    m_currentSettings->showDialog = ui->messageCheckBox->isChecked();
+    settings.setValue("Database/Tablename", m_currentSettings->TableName);
+    settings.setValue("Database/Path", m_currentSettings->DBPath);
+    settings.setValue("Informer/SoundPath", m_currentSettings->SoundPath);
+    settings.setValue("Informer/MsgPattern", m_currentSettings->msgPattern);
+    if(m_currentSettings->playSound)
         settings.setValue("Informer/Sound", "true");
     else
         settings.setValue("Informer/Sound", "false");
-    if(s->showDialog)
+    if(m_currentSettings->showDialog)
         settings.setValue("Informer/Dialog", "true");
     else
         settings.setValue("Informer/Dialog", "false");
-    emit settingsSignal(s);
+    emit settingsSignal(m_currentSettings);
+}
+
+void settingsDialog::on_buttonBox_rejected()
+{
+    ui->dbTableLineEdit->setText(m_currentSettings->TableName);
+    ui->dbPathLineEdit->setText(m_currentSettings->DBPath);
+    ui->soundPathEdit->setText(m_currentSettings->SoundPath);
+    ui->patternLineEdit->setText(m_currentSettings->msgPattern);
+    ui->soundCheckBox->setChecked(m_currentSettings->playSound);
+    ui->messageCheckBox->setChecked(m_currentSettings->showDialog);
 }

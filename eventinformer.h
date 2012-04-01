@@ -21,6 +21,7 @@ private:
     eventForm m_form;
 public:
     explicit eventInformer(QObject *parent = 0);
+    ~eventInformer();
 signals:
     void deleteEventSignal(quint8 id);
 public slots:

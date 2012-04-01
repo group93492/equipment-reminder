@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>660</width>
+    <width>653</width>
     <height>407</height>
    </rect>
   </property>
@@ -45,7 +45,7 @@
       <x>520</x>
       <y>10</y>
       <width>131</width>
-      <height>131</height>
+      <height>141</height>
      </rect>
     </property>
     <property name="title">
@@ -63,7 +63,7 @@
        <x>10</x>
        <y>40</y>
        <width>111</width>
-       <height>24</height>
+       <height>31</height>
       </rect>
      </property>
      <property name="text">
@@ -77,9 +77,9 @@
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>70</y>
+       <y>73</y>
        <width>111</width>
-       <height>24</height>
+       <height>31</height>
       </rect>
      </property>
      <property name="text">
@@ -93,9 +93,9 @@
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>100</y>
+       <y>106</y>
        <width>111</width>
-       <height>24</height>
+       <height>31</height>
       </rect>
      </property>
      <property name="text">
@@ -107,7 +107,7 @@
     <property name="geometry">
      <rect>
       <x>520</x>
-      <y>150</y>
+      <y>160</y>
       <width>131</width>
       <height>101</height>
      </rect>
@@ -121,10 +121,23 @@
        <x>10</x>
        <y>30</y>
        <width>111</width>
-       <height>24</height>
+       <height>31</height>
       </rect>
      </property>
     </widget>
+   </widget>
+   <widget class="QPushButton" name="quitButton">
+    <property name="geometry">
+     <rect>
+      <x>530</x>
+      <y>330</y>
+      <width>111</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Выход</string>
+    </property>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">
@@ -132,7 +145,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>660</width>
+     <width>653</width>
      <height>21</height>
     </rect>
    </property>

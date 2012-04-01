@@ -30,7 +30,7 @@ private:
     eventInformer m_informer;
     QAction *m_editAction;
     QAction *m_deleteAction;
-    structSettings *m_settings;
+
 private slots:
     void lookTable(QSqlTableModel *model);
     void on_addeventButton_clicked();

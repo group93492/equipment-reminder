@@ -23,7 +23,11 @@ class settingsDialog;
 class settingsDialog : public QDialog
 {
     Q_OBJECT
-    
+
+private:
+    Ui::settingsDialog *ui;
+    structSettings *m_currentSettings;
+
 public:
     explicit settingsDialog(QWidget *parent = 0);
     ~settingsDialog();
@@ -33,9 +37,7 @@ private slots:
     void on_soundPathToolButton_clicked();
     void on_dbToolButton_clicked();
     void on_buttonBox_accepted();
-
-private:
-    Ui::settingsDialog *ui;
+    void on_buttonBox_rejected();
 
 signals:
     void settingsSignal(structSettings *s);

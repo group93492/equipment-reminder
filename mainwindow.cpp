@@ -6,6 +6,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    structSettings *m_settings;
     m_addeventDialog = new addeventDialog(this, true);
     m_editeventDialog = new addeventDialog(this, false);
     m_settingsDialog = new settingsDialog(this);
@@ -41,6 +42,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(this, SIGNAL(deleteEventSignal(quint8)), &m_DataBase, SLOT(deleteEvent(quint8)));
     connect(m_settingsDialog, SIGNAL(settingsSignal(structSettings*)), &m_DataBase, SLOT(setSettings(structSettings*)));
     connect(m_settingsDialog, SIGNAL(settingsSignal(structSettings*)), &m_informer, SLOT(setSettings(structSettings*)));
+    connect(ui->quitButton, SIGNAL(clicked()), qApp, SLOT(quit()));
     //settings initialization
     QSettings set("settings", QSettings::IniFormat);
     m_settings->TableName = set.value("Database/Tablename", "events").toString();
@@ -52,7 +54,6 @@ MainWindow::MainWindow(QWidget *parent) :
     m_settingsDialog->setSettings(m_settings);
     m_informer.setSettings(m_settings);
     m_DataBase.setSettings(m_settings);
-
     m_DataBase.connectToBase();
     m_DataBase.sendModel();
     ui->tableView->hideColumn(0);
@@ -65,7 +66,6 @@ MainWindow::~MainWindow()
     delete m_editAction;
     delete m_deleteAction;
     delete m_settingsDialog;
-    delete m_settings;
     delete ui;
 }
 
