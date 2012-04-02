@@ -6,11 +6,21 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    structSettings *m_settings;
+    QIcon icon("icon.png");
+    m_tray = new QSystemTrayIcon(icon);
+    structSettings *settings;
     m_addeventDialog = new addeventDialog(this, true);
     m_editeventDialog = new addeventDialog(this, false);
     m_settingsDialog = new settingsDialog(this);
-    m_settings = new structSettings;
+    settings = new structSettings;
+    //create tray menu
+    QMenu *trayMenu = new QMenu;
+    trayMenu->addAction(QString::fromLocal8Bit("Показать окно"), this, SLOT(hideTray()));
+    trayMenu->addSeparator();
+    trayMenu->addAction(QString::fromLocal8Bit("Добавить событие"), this, SLOT(on_addeventButton_clicked()));
+    trayMenu->addSeparator();
+    trayMenu->addAction(QString::fromLocal8Bit("Выход"), qApp, SLOT(quit()));
+    m_tray->setContextMenu(trayMenu);
     //create menu
     QMenu *menuGeneral;
     QMenu *menuSettings;
@@ -43,17 +53,18 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(m_settingsDialog, SIGNAL(settingsSignal(structSettings*)), &m_DataBase, SLOT(setSettings(structSettings*)));
     connect(m_settingsDialog, SIGNAL(settingsSignal(structSettings*)), &m_informer, SLOT(setSettings(structSettings*)));
     connect(ui->quitButton, SIGNAL(clicked()), qApp, SLOT(quit()));
+    connect(m_tray, SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT(trayActivate(QSystemTrayIcon::ActivationReason)));
     //settings initialization
     QSettings set("settings", QSettings::IniFormat);
-    m_settings->TableName = set.value("Database/Tablename", "events").toString();
-    m_settings->DBPath = set.value("Database/Path", "ReminderDB").toString();
-    m_settings->SoundPath = set.value("Informer/SoundPath", "").toString();
-    m_settings->msgPattern = set.value("Informer/MsgPattern", QString::fromLocal8Bit("%1 в %2 надо быть в кабинете %3, заметки: %4")).toString();
-    m_settings->playSound = set.value("Informer/Sound", false).toBool();
-    m_settings->showDialog = set.value("Informer/Dialog", true).toBool();
-    m_settingsDialog->setSettings(m_settings);
-    m_informer.setSettings(m_settings);
-    m_DataBase.setSettings(m_settings);
+    settings->TableName = set.value("Database/Tablename", "events").toString();
+    settings->DBPath = set.value("Database/Path", "ReminderDB").toString();
+    settings->SoundPath = set.value("Informer/SoundPath", "").toString();
+    settings->msgPattern = set.value("Informer/MsgPattern", QString::fromLocal8Bit("%1 в %2 надо быть в кабинете %3, заметки: %4")).toString();
+    settings->playSound = set.value("Informer/Sound", false).toBool();
+    settings->showDialog = set.value("Informer/Dialog", true).toBool();
+    m_settingsDialog->setSettings(settings);
+    m_informer.setSettings(settings);
+    m_DataBase.setSettings(settings);
     m_DataBase.connectToBase();
     m_DataBase.sendModel();
     ui->tableView->hideColumn(0);
@@ -66,7 +77,15 @@ MainWindow::~MainWindow()
     delete m_editAction;
     delete m_deleteAction;
     delete m_settingsDialog;
+    delete m_tray;
     delete ui;
+}
+
+void MainWindow::closeEvent(QCloseEvent *event)
+{
+    m_tray->setVisible(true);
+    this->hide();
+    event->accept();
 }
 
 void MainWindow::lookTable(QSqlTableModel *model)
@@ -117,4 +136,19 @@ void MainWindow::on_deleteeventButton_clicked()
 void MainWindow::on_comboBox_currentIndexChanged(int index)
 {
     ui->tableView->sortByColumn(index+1, Qt::AscendingOrder);
+}
+
+void MainWindow::trayActivate(QSystemTrayIcon::ActivationReason reason)
+{
+    if(reason == QSystemTrayIcon::DoubleClick)
+    {
+        this->show();
+        m_tray->hide();
+    }
+}
+
+void MainWindow::hideTray()
+{
+    m_tray->hide();
+    this->show();
 }

@@ -22,14 +22,18 @@ public:
     
 private:
     Ui::MainWindow *ui;
-    DBManager m_DataBase;
     addeventDialog *m_addeventDialog;
     addeventDialog *m_editeventDialog;
     settingsDialog *m_settingsDialog;
-    QModelIndex m_currentCell;
-    eventInformer m_informer;
     QAction *m_editAction;
     QAction *m_deleteAction;
+    QSystemTrayIcon *m_tray;
+    QModelIndex m_currentCell;
+    eventInformer m_informer;
+    DBManager m_DataBase;
+
+protected:
+    virtual void closeEvent(QCloseEvent *event);
 
 private slots:
     void lookTable(QSqlTableModel *model);
@@ -38,7 +42,8 @@ private slots:
     void on_editeventButton_clicked();
     void on_deleteeventButton_clicked();
     void on_comboBox_currentIndexChanged(int index);
-
+    void trayActivate(QSystemTrayIcon::ActivationReason reason);
+    void hideTray();
 signals:
     void deleteEventSignal(quint8 id);
 };
