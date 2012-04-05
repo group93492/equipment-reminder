@@ -115,13 +115,22 @@ void DBManager::deleteEvent(quint8 id)
 void DBManager::findComingEvents()
 {
     QSqlQuery query;
-    QString str = QString("SELECT * FROM %1 "
-                          "WHERE time = (SELECT MIN(time) FROM %1 "
-                          "WHERE date = (SELECT MIN(date) FROM %1));")
+    QSqlRecord rec;
+    QString currentDate = QDate::currentDate().toString("dd.MM.yyyy");
+    QString currentTime = QTime::currentTime().toString("hh:mm:ss");
+    //cleaning table of obsolete records
+    QString str = QString("DELETE FROM %1 WHERE date < '%2' OR (date = '%2' and time < '%3');")
+            .arg(m_TableName)
+            .arg(currentDate)
+            .arg(currentTime);
+    if(!query.exec(str))
+        qDebug() << "Invalid sql query: " << query.lastError().text();
+    str = QString("SELECT * FROM %1 WHERE "
+                  "time = (SELECT MIN(time) FROM %1 WHERE date = (SELECT MIN(date) FROM %1)) and "
+                  "date = (SELECT MIN(date) FROM %1);")
             .arg(m_TableName);
     if(!query.exec(str))
         qDebug() << "Invalid sql query: " << query.lastError().text();
-    QSqlRecord rec;
     QList<events> List;
     events tempEvent;
     while(query.next())
@@ -129,10 +138,11 @@ void DBManager::findComingEvents()
         rec = query.record();
         tempEvent.id = rec.value(0).toUInt();
         tempEvent.cabinet = rec.value(1).toString();
-        tempEvent.date = rec.value(2).toDate();
+        tempEvent.date = QDate::fromString(rec.value(2).toString(), "dd.MM.yyyy"); //DONT FIX!
         tempEvent.time = rec.value(3).toTime();
         tempEvent.inf = rec.value(4).toString();
         List.append(tempEvent);
     }
     emit comingEvents(List);
+    sendModel();
 }

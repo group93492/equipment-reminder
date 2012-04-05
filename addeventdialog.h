@@ -5,6 +5,7 @@
 #include <QDate>
 #include <QTime>
 #include <QDebug>
+#include <QListWidgetItem>
 
 namespace Ui {
 class addeventDialog;
@@ -30,6 +31,7 @@ signals:
     void editEventSignal(quint8 id, QString cabinet, QString date, QString time, QString inf);
 public slots:
     void setElements(quint8 id, QString cabinet, QString date, QString time, QString inf);
+    void changeTime(QListWidgetItem *item);
 
 };
 
