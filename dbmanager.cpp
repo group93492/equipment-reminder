@@ -130,7 +130,7 @@ void DBManager::findComingEvents()
             .arg(m_TableName);
     if(!query.exec(str))
         qDebug() << "Invalid sql query: " << query.lastError().text();
-    QList<events> List;
+    QList<events> *List = new QList<events>;
     events tempEvent;
     while(query.next())
     {
@@ -140,9 +140,9 @@ void DBManager::findComingEvents()
         tempEvent.date = QDate::fromString(rec.value(2).toString(), "dd.MM.yyyy"); //DONT FIX!
         tempEvent.time = rec.value(3).toTime();
         tempEvent.inf = rec.value(4).toString();
-        List.append(tempEvent);
+        List->append(tempEvent);
     }
-    if(!List.empty())
+    if(!List->empty())
         emit comingEvents(List);
     sendModel();
 }
