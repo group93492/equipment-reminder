@@ -144,6 +144,7 @@ void DBManager::findComingEvents()
         tempEvent.inf = rec.value(4).toString();
         List->append(tempEvent);
     }
-    emit comingEvents(List);
+    if(!List->empty())
+        emit comingEvents(List);
     sendModel();
 }
