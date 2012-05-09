@@ -15,7 +15,6 @@ class MainWindow;
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
-    
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
@@ -44,8 +43,10 @@ private slots:
     void on_comboBox_currentIndexChanged(int index);
     void trayActivate(QSystemTrayIcon::ActivationReason reason);
     void hideTray();
+
 signals:
     void deleteEventSignal(quint8 id);
+
 };
 
 #endif // MAINWINDOW_H

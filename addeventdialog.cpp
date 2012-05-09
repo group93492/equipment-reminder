@@ -14,6 +14,7 @@ addeventDialog::addeventDialog(QWidget *parent, bool p) :
          << "15:15 - 16:50"
          << "17:00 - 18:35"
          << "18:45 - 20:20";
+    //TODO ADD IT IN DB ^
     ui->listWidget->addItems(List);
     ui->dateEdit->setDate(QDate::currentDate());
     m_addDialog = p;

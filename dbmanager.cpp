@@ -126,7 +126,8 @@ void DBManager::findComingEvents()
     if(!query.exec(str))
         qDebug() << "Invalid sql query: " << query.lastError().text();
     str = QString("SELECT * FROM %1 WHERE "
-                  "time = (SELECT MIN(time) FROM %1 WHERE date = (SELECT MIN(date) FROM %1)) and "
+                  "time = (SELECT MIN(time) FROM %1 WHERE "
+                  "date = (SELECT MIN(date) FROM %1)) and "
                   "date = (SELECT MIN(date) FROM %1);")
             .arg(m_TableName);
     if(!query.exec(str))

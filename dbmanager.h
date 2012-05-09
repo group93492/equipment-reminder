@@ -23,11 +23,15 @@ private:
     QString m_DBName;
     QSqlDatabase m_DataBase;
     quint8 m_id;
+
 public:
     explicit DBManager(QObject *parent = 0);
     void connectToBase();
+
 signals:
     void tableModel(QSqlTableModel *model);
+    void comingEvents(QList<events> List);
+
 public slots:
     void sendModel();
     void setSettings(structSettings *s);
@@ -35,8 +39,7 @@ public slots:
     void editEvent(quint8 id, QString cabinet, QString date, QString time, QString inf);
     void deleteEvent(quint8 id);
     void findComingEvents();
-signals:
-    void comingEvents(QList<events> List);
+
 };
 
 #endif // DBMANAGER_H
