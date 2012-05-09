@@ -30,7 +30,7 @@ public:
 
 signals:
     void tableModel(QSqlTableModel *model);
-    void comingEvents(QList<events> *List);
+    void comingEvents(QList<events> List);
 
 public slots:
     void sendModel();

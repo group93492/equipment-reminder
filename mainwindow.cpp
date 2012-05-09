@@ -56,8 +56,8 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(m_tray, SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT(trayActivate(QSystemTrayIcon::ActivationReason)));
     connect(&m_eventInformer, SIGNAL(deleteEventSignal(quint8)), &m_DataBase, SLOT(deleteEvent(quint8)));
     //timer manager
-    connect(&m_DataBase, SIGNAL(comingEvents(QList<events>*)), &m_timerManager, SLOT(updateTimer(QList<events>*)));
-    connect(&m_timerManager, SIGNAL(eventOccured(QList<events>*)), &m_eventInformer, SLOT(showEvent(QList<events>*)));
+    connect(&m_DataBase, SIGNAL(comingEvents(QList<events>)), &m_timerManager, SLOT(updateTimer(QList<events>)));
+    connect(&m_timerManager, SIGNAL(eventOccured(QList<events>)), &m_eventInformer, SLOT(showEvent(QList<events>)));
     //settings initialization
     QSettings set("settings", QSettings::IniFormat);
     settings->TableName = set.value("Database/Tablename", "events").toString();

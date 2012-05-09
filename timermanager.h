@@ -15,20 +15,20 @@ private:
 //to avoid this situation, we alsa process the events which occured time was during
 //last AntiLagTimeMsec mseconds.
     };
-    QList<events> *m_currentEventList;
+    QList<events> m_currentEventList;
     QTimer m_currentTimer;
 
 public:
     explicit TimerManager(QObject *parent = 0);
     
 signals:
-    void eventOccured(QList<events> *List);
+    void eventOccured(QList<events> List);
     
 private slots:
     void sendEventOccuredSignal();
 
 public slots:
-    void updateTimer(QList<events> *List);
+    void updateTimer(QList<events> List);
 
 };
 
