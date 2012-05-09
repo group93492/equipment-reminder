@@ -16,6 +16,7 @@ addeventDialog::addeventDialog(QWidget *parent, bool p) :
          << "18:45 - 20:20";
     //TODO ADD IT IN DB ^
     ui->listWidget->addItems(List);
+    ui->timeEdit->setTime(QTime::currentTime());
     ui->dateEdit->setDate(QDate::currentDate());
     m_addDialog = p;
     if(p)
@@ -28,6 +29,12 @@ addeventDialog::addeventDialog(QWidget *parent, bool p) :
 addeventDialog::~addeventDialog()
 {
     delete ui;
+}
+
+void addeventDialog::showEvent(QShowEvent *event)
+{
+    ui->timeEdit->setTime(QTime::currentTime());
+    ui->dateEdit->setDate(QDate::currentDate());
 }
 
 void addeventDialog::on_buttonBox_accepted()
