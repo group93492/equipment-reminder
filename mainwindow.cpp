@@ -7,6 +7,8 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     QIcon icon("icon.png");
+    setWindowIcon(icon);
+    setWindowTitle("Equipment Reminder");
     m_tray = new QSystemTrayIcon(icon);
     structSettings *settings;
     m_addeventDialog = new addeventDialog(this, true);

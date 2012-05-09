@@ -217,7 +217,7 @@
        </rect>
       </property>
       <property name="text">
-       <string>%1 - кабинет, %2 - дата, %3 - время, %4 - заметки</string>
+       <string>%1 - дата, %2 - время, %3 - кабинет, %4 - заметки</string>
       </property>
      </widget>
      <widget class="QCheckBox" name="messageCheckBox">

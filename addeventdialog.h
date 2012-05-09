@@ -17,9 +17,6 @@ class addeventDialog : public QDialog
 public:
     explicit addeventDialog(QWidget *parent = 0, bool p = true);
     ~addeventDialog();
-    
-protected:
-    virtual void showEvent(QShowEvent * event);
 
 private slots:
     void on_buttonBox_accepted();

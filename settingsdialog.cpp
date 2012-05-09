@@ -6,6 +6,8 @@ settingsDialog::settingsDialog(QWidget *parent) :
     ui(new Ui::settingsDialog)
 {
     ui->setupUi(this);
+    setWindowIcon(QIcon("icon.png"));
+    setWindowTitle(QString::fromLocal8Bit("Настройки"));
     m_currentSettings = new structSettings;
     if(!QSound::isAvailable())
     {

@@ -6,6 +6,7 @@ addeventDialog::addeventDialog(QWidget *parent, bool p) :
     ui(new Ui::addeventDialog)
 {
     ui->setupUi(this);
+    setWindowIcon(QIcon("icon.png"));
     QStringList List;
     List << "08:05 - 09:40" //maybe read from file?
          << "09:50 - 11:25"
@@ -16,11 +17,13 @@ addeventDialog::addeventDialog(QWidget *parent, bool p) :
          << "18:45 - 20:20";
     //TODO ADD IT IN DB ^
     ui->listWidget->addItems(List);
-    ui->timeEdit->setTime(QTime::currentTime());
-    ui->dateEdit->setDate(QDate::currentDate());
     m_addDialog = p;
     if(p)
+    {
         this->setWindowTitle(QString::fromLocal8Bit("Добавить событие"));
+        ui->timeEdit->setTime(QTime::currentTime());
+        ui->dateEdit->setDate(QDate::currentDate());
+    }
     else
         this->setWindowTitle(QString::fromLocal8Bit("Редактировать событие"));
     connect(ui->listWidget, SIGNAL(itemClicked(QListWidgetItem*)), this, SLOT(changeTime(QListWidgetItem*)));
@@ -29,12 +32,6 @@ addeventDialog::addeventDialog(QWidget *parent, bool p) :
 addeventDialog::~addeventDialog()
 {
     delete ui;
-}
-
-void addeventDialog::showEvent(QShowEvent *event)
-{
-    ui->timeEdit->setTime(QTime::currentTime());
-    ui->dateEdit->setDate(QDate::currentDate());
 }
 
 void addeventDialog::on_buttonBox_accepted()
