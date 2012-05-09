@@ -54,6 +54,9 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(m_settingsDialog, SIGNAL(settingsSignal(structSettings*)), &m_eventInformer, SLOT(setSettings(structSettings*)));
     connect(ui->quitButton, SIGNAL(clicked()), qApp, SLOT(quit()));
     connect(m_tray, SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT(trayActivate(QSystemTrayIcon::ActivationReason)));
+    //timer manager
+    connect(&m_DataBase, SIGNAL(comingEvents(QList<events>*)), &m_timerManager, SLOT(updateTimer(QList<events>*)));
+    connect(&m_timerManager, SIGNAL(eventOccured(QList<events>*)), &m_eventInformer, SLOT(showEvent(QList<events>*)));
     //settings initialization
     QSettings set("settings", QSettings::IniFormat);
     settings->TableName = set.value("Database/Tablename", "events").toString();

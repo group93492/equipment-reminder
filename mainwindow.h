@@ -7,6 +7,7 @@
 #include "addeventdialog.h"
 #include "eventinformer.h"
 #include "settingsdialog.h"
+#include "timermanager.h"
 
 namespace Ui {
 class MainWindow;
@@ -29,6 +30,7 @@ private:
     QSystemTrayIcon *m_tray;
     QModelIndex m_currentCell;
     eventInformer m_eventInformer;
+    TimerManager m_timerManager;
     DBManager m_DataBase;
 
 protected:
