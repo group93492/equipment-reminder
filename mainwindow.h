@@ -28,7 +28,7 @@ private:
     QAction *m_deleteAction;
     QSystemTrayIcon *m_tray;
     QModelIndex m_currentCell;
-    eventInformer m_informer;
+    eventInformer m_eventInformer;
     DBManager m_DataBase;
 
 protected:

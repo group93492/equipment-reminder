@@ -51,7 +51,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(m_editeventDialog, SIGNAL(editEventSignal(quint8,QString,QString,QString,QString)), &m_DataBase, SLOT(editEvent(quint8,QString,QString,QString,QString)));
     connect(this, SIGNAL(deleteEventSignal(quint8)), &m_DataBase, SLOT(deleteEvent(quint8)));
     connect(m_settingsDialog, SIGNAL(settingsSignal(structSettings*)), &m_DataBase, SLOT(setSettings(structSettings*)));
-    connect(m_settingsDialog, SIGNAL(settingsSignal(structSettings*)), &m_informer, SLOT(setSettings(structSettings*)));
+    connect(m_settingsDialog, SIGNAL(settingsSignal(structSettings*)), &m_eventInformer, SLOT(setSettings(structSettings*)));
     connect(ui->quitButton, SIGNAL(clicked()), qApp, SLOT(quit()));
     connect(m_tray, SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT(trayActivate(QSystemTrayIcon::ActivationReason)));
     //settings initialization
@@ -63,7 +63,7 @@ MainWindow::MainWindow(QWidget *parent) :
     settings->playSound = set.value("Informer/Sound", false).toBool();
     settings->showDialog = set.value("Informer/Dialog", true).toBool();
     m_settingsDialog->setSettings(settings);
-    m_informer.setSettings(settings);
+    m_eventInformer.setSettings(settings);
     m_DataBase.setSettings(settings);
     m_DataBase.connectToBase();
     m_DataBase.sendModel();
