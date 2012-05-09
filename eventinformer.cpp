@@ -48,6 +48,7 @@ void eventInformer::showEvent(QList<events> *List)
     }
     if(m_playSound)
         m_sound->play();
+    delete List;
 }
 
 void eventInformer::closeEvent()
