@@ -29,20 +29,20 @@ void eventInformer::setSettings(structSettings *s)
     }
 }
 
-void eventInformer::showEvent(QList<events> List)
+void eventInformer::showEvent(QList<events> *List)
 {
     if(m_showDialog)
     {
         QString msgString;
-        for(int i = 0; i < List.size(); i++)
+        for(int i = 0; i < List->size(); i++)
         {
             msgString = m_msgPattern
-                    .arg(List.value(i).date.toString("dd.MM.yyyy"))
-                    .arg(List.value(i).time.toString("hh:mm:ss"))
-                    .arg(List.value(i).cabinet)
-                    .arg(List.value(i).inf);
+                    .arg(List->value(i).date.toString("dd.MM.yyyy"))
+                    .arg(List->value(i).time.toString("hh:mm:ss"))
+                    .arg(List->value(i).cabinet)
+                    .arg(List->value(i).inf);
             m_form.append(msgString);
-            emit deleteEventSignal(List.value(i).id);
+            emit deleteEventSignal(List->value(i).id);
         }
         m_form.show();
     }
