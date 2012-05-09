@@ -16,14 +16,16 @@ SOURCES += main.cpp\
     addeventdialog.cpp \
     eventinformer.cpp \
     eventform.cpp \
-    settingsdialog.cpp
+    settingsdialog.cpp \
+    timermanager.cpp
 
 HEADERS  += mainwindow.h \
     dbmanager.h \
     addeventdialog.h \
     eventinformer.h \
     eventform.h \
-    settingsdialog.h
+    settingsdialog.h \
+    timermanager.h
 
 FORMS    += mainwindow.ui \
     addeventdialog.ui \
