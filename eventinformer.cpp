@@ -1,5 +1,5 @@
 #include "eventinformer.h"
-
+#include <QDebug>
 
 eventInformer::eventInformer(QObject *parent) :
     QObject(parent)
