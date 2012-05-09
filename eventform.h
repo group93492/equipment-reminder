@@ -13,7 +13,6 @@ class eventForm : public QWidget
 
 public:
     explicit eventForm(QWidget *parent = 0);
-    void append(QString str);
     void clear();
     ~eventForm();
 
@@ -22,6 +21,9 @@ private:
 
 private slots:
     void on_pushButton_clicked();
+
+public slots:
+    void append(QString str);
 
 signals:
     void acceptSignal();
