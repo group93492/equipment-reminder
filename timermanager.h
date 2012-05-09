@@ -9,7 +9,7 @@ class TimerManager : public QObject
     Q_OBJECT
 private:
     enum {
-        AntiLagTimeMsec = 200, //if there is some lags in system, we can get a
+        AntiLagTimeMsec = 100, //if there is some lags in system, we can get a
 //delay while sending a signal with list of feature events and when we will try
 //to process this event, the time will take place during the lag
 //to avoid this situation, we alsa process the events which occured time was during
