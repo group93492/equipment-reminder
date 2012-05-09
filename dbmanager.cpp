@@ -50,8 +50,6 @@ void DBManager::setSettings(structSettings *s)
         m_DataBase.close();
     m_DBName = s->DBPath;
     m_TableName = s->TableName;
-    connectToBase();
-    sendModel();
 }
 
 void DBManager::sendModel()
