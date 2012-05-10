@@ -38,6 +38,10 @@ MainWindow::MainWindow(QWidget *parent) :
     menuGeneral->addAction(tr("Exit"), qApp, SLOT(quit()));
     //settings menu
     menuSettings->addAction(tr("Settings..."), m_settingsDialog, SLOT(show()));
+    //languages
+    QMenu *languageMenu = menuSettings->addMenu(tr("Language"));
+    QAction *languageChangeRussian = languageMenu->addAction(QString::fromLocal8Bit("Русский"), this, SLOT(on_languageChangeRussianAction_clicked()));
+    QAction *languageChangeEnglish = languageMenu->addAction("English", this, SLOT(on_languageChangeEnglishAction_clicked()));
     //about menu
     menuAbout->addAction(tr("About Qt"), qApp, SLOT(aboutQt()));
     //combobox
@@ -155,4 +159,14 @@ void MainWindow::hideTray()
 {
     m_tray->hide();
     this->show();
+}
+
+void MainWindow::on_languageChangeRussianAction_clicked()
+{
+
+}
+
+void MainWindow::on_languageChangeEnglishAction_clicked()
+{
+
 }

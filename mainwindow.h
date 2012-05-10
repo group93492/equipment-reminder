@@ -45,6 +45,8 @@ private slots:
     void on_comboBox_currentIndexChanged(int index);
     void trayActivate(QSystemTrayIcon::ActivationReason reason);
     void hideTray();
+    void on_languageChangeRussianAction_clicked();
+    void on_languageChangeEnglishAction_clicked();
 
 signals:
     void deleteEventSignal(quint8 id);
