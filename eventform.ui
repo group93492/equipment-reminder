@@ -23,7 +23,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>Ознакомился</string>
+    <string>Inspected</string>
    </property>
   </widget>
   <widget class="QTextBrowser" name="textBrowser">

@@ -67,12 +67,12 @@
     <rect>
      <x>20</x>
      <y>10</y>
-     <width>56</width>
+     <width>91</width>
      <height>21</height>
     </rect>
    </property>
    <property name="text">
-    <string>Кабинет</string>
+    <string>Cabinet:</string>
    </property>
   </widget>
   <widget class="QLabel" name="date">
@@ -80,12 +80,12 @@
     <rect>
      <x>20</x>
      <y>50</y>
-     <width>56</width>
+     <width>91</width>
      <height>21</height>
     </rect>
    </property>
    <property name="text">
-    <string>Дата</string>
+    <string>Date:</string>
    </property>
   </widget>
   <widget class="QLabel" name="time">
@@ -93,12 +93,12 @@
     <rect>
      <x>20</x>
      <y>90</y>
-     <width>56</width>
+     <width>91</width>
      <height>21</height>
     </rect>
    </property>
    <property name="text">
-    <string>Время</string>
+    <string>Time:</string>
    </property>
   </widget>
   <widget class="QLabel" name="notes">
@@ -106,12 +106,12 @@
     <rect>
      <x>20</x>
      <y>160</y>
-     <width>56</width>
+     <width>91</width>
      <height>21</height>
     </rect>
    </property>
    <property name="text">
-    <string>Заметки</string>
+    <string>Notes:</string>
    </property>
   </widget>
   <widget class="QTextEdit" name="notesEdit">

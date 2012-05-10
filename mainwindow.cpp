@@ -15,34 +15,34 @@ MainWindow::MainWindow(QWidget *parent) :
     settings = new structSettings;
     //create tray menu
     QMenu *trayMenu = new QMenu;
-    trayMenu->addAction(QString::fromLocal8Bit("Показать окно"), this, SLOT(hideTray()));
+    trayMenu->addAction(tr("Show window"), this, SLOT(hideTray()));
     trayMenu->addSeparator();
-    trayMenu->addAction(QString::fromLocal8Bit("Добавить событие"), this, SLOT(on_addeventButton_clicked()));
+    trayMenu->addAction(tr("Add event"), this, SLOT(on_addeventButton_clicked()));
     trayMenu->addSeparator();
-    trayMenu->addAction(QString::fromLocal8Bit("Выход"), qApp, SLOT(quit()));
+    trayMenu->addAction(tr("Exit"), qApp, SLOT(quit()));
     m_tray->setContextMenu(trayMenu);
     //create menu
     QMenu *menuGeneral;
     QMenu *menuSettings;
     QMenu *menuAbout;
-    menuGeneral = ui->menuBar->addMenu(QString::fromLocal8Bit("Общее"));
-    menuSettings = ui->menuBar->addMenu(QString::fromLocal8Bit("Настройки"));
-    menuAbout = ui->menuBar->addMenu(QString::fromLocal8Bit("О программе"));
+    menuGeneral = ui->menuBar->addMenu(tr("Common"));
+    menuSettings = ui->menuBar->addMenu(tr("Settings"));
+    menuAbout = ui->menuBar->addMenu(tr("About"));
     //general menu
-    menuGeneral->addAction(QString::fromLocal8Bit("Добавить событие..."), this, SLOT(on_addeventButton_clicked()));
-    m_editAction = menuGeneral->addAction(QString::fromLocal8Bit("Редактировать событие..."), this, SLOT(on_editeventButton_clicked()));
+    menuGeneral->addAction(tr("Add event..."), this, SLOT(on_addeventButton_clicked()));
+    m_editAction = menuGeneral->addAction(tr("Edit event..."), this, SLOT(on_editeventButton_clicked()));
     m_editAction->setEnabled(false);
-    m_deleteAction = menuGeneral->addAction(QString::fromLocal8Bit("Удалить событие"), this, SLOT(on_deleteeventButton_clicked()));
+    m_deleteAction = menuGeneral->addAction(tr("Delete event"), this, SLOT(on_deleteeventButton_clicked()));
     m_deleteAction->setEnabled(false);
     menuGeneral->addSeparator();
-    menuGeneral->addAction(QString::fromLocal8Bit("Выход"), qApp, SLOT(quit()));
+    menuGeneral->addAction(tr("Exit"), qApp, SLOT(quit()));
     //settings menu
-    menuSettings->addAction(QString::fromLocal8Bit("Настройки..."), m_settingsDialog, SLOT(show()));
+    menuSettings->addAction(tr("Settings..."), m_settingsDialog, SLOT(show()));
     //about menu
-    menuAbout->addAction(QString::fromLocal8Bit("О Qt"), qApp, SLOT(aboutQt()));
+    menuAbout->addAction(tr("About Qt"), qApp, SLOT(aboutQt()));
     //combobox
     QStringList List;
-    List << "cabinet" << "date" << "time";
+    List << tr("cabinet") << tr("date") << tr("time");
     ui->comboBox->addItems(List);
     ui->comboBox->setCurrentIndex(1);
     //connect section
@@ -63,7 +63,7 @@ MainWindow::MainWindow(QWidget *parent) :
     settings->TableName = set.value("Database/Tablename", "events").toString();
     settings->DBPath = set.value("Database/Path", "ReminderDB").toString();
     settings->SoundPath = set.value("Informer/SoundPath", "").toString();
-    settings->msgPattern = set.value("Informer/MsgPattern", QString::fromLocal8Bit("%1 в %2 надо быть в кабинете %3, заметки: %4")).toString();
+    settings->msgPattern = set.value("Informer/MsgPattern", tr("%1 in %2 have to be in cabinet %3, notes: %4")).toString();
     settings->playSound = set.value("Informer/Sound", false).toBool();
     settings->showDialog = set.value("Informer/Dialog", true).toBool();
     m_settingsDialog->setSettings(settings);

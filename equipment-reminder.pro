@@ -8,6 +8,7 @@ QT       += core gui sql
 
 TARGET = equipment-reminder
 TEMPLATE = app
+TRANSLATIONS += translate_ru.ts
 
 
 SOURCES += main.cpp\

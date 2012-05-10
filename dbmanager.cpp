@@ -30,13 +30,13 @@ void DBManager::connectToBase()
                     ");";
         QSqlQuery query;
         if(!query.exec(str))
-            qDebug() << "Invalid sql query: " << query.lastError().text();
+            qDebug() << tr("Invalid sql query: ") << query.lastError().text();
     }
     QSqlQuery query;
     QString str = QString("SELECT MAX(id) FROM %1;")
             .arg(m_TableName);
     if(!query.exec(str))
-        qDebug() << "Invalid sql query: " << query.lastError().text();
+        qDebug() << tr("Invalid sql query: ") << query.lastError().text();
     QSqlRecord rec;
     query.next();
     rec = query.record();
@@ -74,7 +74,7 @@ void DBManager::addEvent(QString cabinet, QString date, QString time, QString in
             .arg(time)
             .arg(inf);
     if(!query.exec(str))
-        qDebug() << "Invalid sql query: " << query.lastError().text();
+        qDebug() << tr("Invalid sql query: ") << query.lastError().text();
     sendModel();
     findComingEvents();
 }
@@ -92,7 +92,7 @@ void DBManager::editEvent(quint8 id, QString cabinet, QString date, QString time
             .arg(inf)
             .arg(id);
     if(!query.exec(str))
-        qDebug() << "Invalid sql query: " << query.lastError().text();
+        qDebug() << tr("Invalid sql query: ") << query.lastError().text();
     sendModel();
     findComingEvents();
 }
@@ -105,7 +105,7 @@ void DBManager::deleteEvent(quint8 id)
             .arg(m_TableName)
             .arg(id);
     if(!query.exec(str))
-        qDebug() << "Invalid sql query: " << query.lastError().text();
+        qDebug() << tr("Invalid sql query: ") << query.lastError().text();
     sendModel();
     findComingEvents();
 }
@@ -122,14 +122,14 @@ void DBManager::findComingEvents()
             .arg(currentDate)
             .arg(currentTime);
     if(!query.exec(str))
-        qDebug() << "Invalid sql query: " << query.lastError().text();
+        qDebug() << tr("Invalid sql query: ") << query.lastError().text();
     str = QString("SELECT * FROM %1 WHERE "
                   "time = (SELECT MIN(time) FROM %1 WHERE "
                   "date = (SELECT MIN(date) FROM %1)) and "
                   "date = (SELECT MIN(date) FROM %1);")
             .arg(m_TableName);
     if(!query.exec(str))
-        qDebug() << "Invalid sql query: " << query.lastError().text();
+        qDebug() << tr("Invalid sql query: ") << query.lastError().text();
     QList<events> *List = new QList<events>;
     events tempEvent;
     while(query.next())

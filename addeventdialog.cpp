@@ -20,9 +20,9 @@ addeventDialog::addeventDialog(QWidget *parent, bool p) :
     ui->dateEdit->setDate(QDate::currentDate());
     m_addDialog = p;
     if(p)
-        this->setWindowTitle(QString::fromLocal8Bit("Добавить событие"));
+        this->setWindowTitle(tr("Add event"));
     else
-        this->setWindowTitle(QString::fromLocal8Bit("Редактировать событие"));
+        this->setWindowTitle(tr("Edit event"));
     connect(ui->listWidget, SIGNAL(itemClicked(QListWidgetItem*)), this, SLOT(changeTime(QListWidgetItem*)));
 }
 

@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Настройки</string>
+   <string>Settings</string>
   </property>
   <widget class="QDialogButtonBox" name="buttonBox">
    <property name="geometry">
@@ -39,11 +39,11 @@
     </rect>
    </property>
    <property name="currentIndex">
-    <number>0</number>
+    <number>1</number>
    </property>
-   <widget class="QWidget" name="tab">
+   <widget class="QWidget" name="informer">
     <attribute name="title">
-     <string>Информер</string>
+     <string>Informer</string>
     </attribute>
     <widget class="QGroupBox" name="soundGroupBox">
      <property name="geometry">
@@ -55,7 +55,7 @@
       </rect>
      </property>
      <property name="title">
-      <string>Звук</string>
+      <string>Sound</string>
      </property>
      <property name="flat">
       <bool>false</bool>
@@ -63,9 +63,9 @@
      <widget class="QLineEdit" name="soundPathEdit">
       <property name="geometry">
        <rect>
-        <x>140</x>
+        <x>150</x>
         <y>30</y>
-        <width>311</width>
+        <width>301</width>
         <height>23</height>
        </rect>
       </property>
@@ -80,7 +80,7 @@
        </rect>
       </property>
       <property name="text">
-       <string>Путь к wav файлу</string>
+       <string>Path to wav file:</string>
       </property>
      </widget>
      <widget class="QToolButton" name="soundPathToolButton">
@@ -151,12 +151,12 @@
        <rect>
         <x>10</x>
         <y>50</y>
-        <width>161</width>
+        <width>211</width>
         <height>31</height>
        </rect>
       </property>
       <property name="text">
-       <string>Воспроизводить звук</string>
+       <string>Play sound</string>
       </property>
       <property name="checked">
        <bool>true</bool>
@@ -176,7 +176,7 @@
       </rect>
      </property>
      <property name="title">
-      <string>Сообщение</string>
+      <string>Message</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
@@ -187,9 +187,9 @@
      <widget class="QLineEdit" name="patternLineEdit">
       <property name="geometry">
        <rect>
-        <x>140</x>
+        <x>150</x>
         <y>30</y>
-        <width>311</width>
+        <width>301</width>
         <height>23</height>
        </rect>
       </property>
@@ -199,12 +199,12 @@
        <rect>
         <x>10</x>
         <y>30</y>
-        <width>131</width>
+        <width>141</width>
         <height>21</height>
        </rect>
       </property>
       <property name="text">
-       <string>Шаблон сообщения</string>
+       <string>Message template:</string>
       </property>
      </widget>
      <widget class="QLabel" name="patternInfLabel">
@@ -217,7 +217,7 @@
        </rect>
       </property>
       <property name="text">
-       <string>%1 - кабинет, %2 - дата, %3 - время, %4 - заметки</string>
+       <string>%1 - cabinet, %2 - date, %3 - time, %4 - notes</string>
       </property>
      </widget>
      <widget class="QCheckBox" name="messageCheckBox">
@@ -225,12 +225,12 @@
        <rect>
         <x>10</x>
         <y>80</y>
-        <width>181</width>
+        <width>461</width>
         <height>21</height>
        </rect>
       </property>
       <property name="text">
-       <string>Показывать сообщение</string>
+       <string>Show message</string>
       </property>
       <property name="checked">
        <bool>true</bool>
@@ -238,9 +238,9 @@
      </widget>
     </widget>
    </widget>
-   <widget class="QWidget" name="tab_2">
+   <widget class="QWidget" name="DB">
     <attribute name="title">
-     <string>База данных</string>
+     <string>Datebase</string>
     </attribute>
     <widget class="QLineEdit" name="dbPathLineEdit">
      <property name="geometry">
@@ -284,8 +284,13 @@
        <height>21</height>
       </rect>
      </property>
+     <property name="font">
+      <font>
+       <pointsize>9</pointsize>
+      </font>
+     </property>
      <property name="text">
-      <string>Путь к базе данных</string>
+      <string>Path to date base:</string>
      </property>
     </widget>
     <widget class="QLabel" name="dbTableLabel">
@@ -297,8 +302,13 @@
        <height>21</height>
       </rect>
      </property>
+     <property name="font">
+      <font>
+       <pointsize>10</pointsize>
+      </font>
+     </property>
      <property name="text">
-      <string>Имя таблицы</string>
+      <string>Table name:</string>
      </property>
     </widget>
    </widget>

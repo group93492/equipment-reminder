@@ -13,7 +13,7 @@ settingsDialog::settingsDialog(QWidget *parent) :
         ui->soundPathToolButton->setEnabled(false);
         ui->soundCheckBox->setChecked(false);
         ui->soundCheckBox->setEnabled(false);
-        ui->soundErrorLabel->setText(QString::fromLocal8Bit("Проблемы со звуковой системой. Возможно не установлен NAS"));
+        ui->soundErrorLabel->setText(tr("Error in sound system. Possible NAS doesn't installed."));
     }
 }
 
@@ -39,7 +39,7 @@ void settingsDialog::on_soundPathToolButton_clicked()
     if(QSound::isAvailable())
     {
         QString path;
-        path = QFileDialog::getOpenFileName(this, "Open sound", QDir::currentPath(), "Sound (*.wav)");
+        path = QFileDialog::getOpenFileName(this, tr("Open sound"), QDir::currentPath(), tr("Sound (*.wav)"));
         if(!path.isEmpty())
             ui->soundPathEdit->setText(path);
     }
@@ -48,7 +48,7 @@ void settingsDialog::on_soundPathToolButton_clicked()
 void settingsDialog::on_dbToolButton_clicked()
 {
     QString path;
-    path = QFileDialog::getOpenFileName(this, "Open DB", QDir::currentPath());
+    path = QFileDialog::getOpenFileName(this, tr("Open DB"), QDir::currentPath());
     if(!path.isEmpty())
         ui->dbPathLineEdit->setText(path);
 }
