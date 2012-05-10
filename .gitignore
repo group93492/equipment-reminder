@@ -20,3 +20,4 @@ Makefile
 moc_*
 equipment-reminder
 *~
+*orig
