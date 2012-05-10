@@ -33,6 +33,7 @@ signals:
 public slots:
     void setElements(quint8 id, QString cabinet, QString date, QString time, QString inf);
     void changeTime(QListWidgetItem *item);
+    void show();
 
 };
 

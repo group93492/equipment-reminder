@@ -59,3 +59,13 @@ void addeventDialog::changeTime(QListWidgetItem *item)
 {
     ui->timeEdit->setTime(QTime::fromString(item->text().left(5), "hh:mm"));
 }
+
+void addeventDialog::show()
+{
+    if(m_addDialog)
+    {
+        ui->timeEdit->setTime(QTime::currentTime());
+        ui->dateEdit->setDate(QDate::currentDate());
+    }
+    QDialog::show();
+}
