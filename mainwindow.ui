@@ -132,6 +132,21 @@
                <height>31</height>
               </rect>
              </property>
+             <item>
+              <property name="text">
+               <string>Кабинет</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Дата</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Время</string>
+              </property>
+             </item>
             </widget>
            </widget>
           </item>
@@ -168,7 +183,7 @@
      <x>0</x>
      <y>0</y>
      <width>698</width>
-     <height>21</height>
+     <height>25</height>
     </rect>
    </property>
   </widget>
