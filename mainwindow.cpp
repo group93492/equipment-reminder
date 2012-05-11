@@ -42,11 +42,6 @@ MainWindow::MainWindow(QWidget *parent) :
     menuSettings->addAction(QString::fromLocal8Bit("Настройки..."), m_settingsDialog, SLOT(show()));
     //about menu
     menuAbout->addAction(QString::fromLocal8Bit("О Qt"), qApp, SLOT(aboutQt()));
-    //combobox
-    QStringList List;
-    List << "cabinet" << "date" << "time";
-    ui->comboBox->addItems(List);
-    ui->comboBox->setCurrentIndex(1);
     //connect section
     connect(&m_DataBase, SIGNAL(tableModel(QSqlTableModel*)), this, SLOT(lookTable(QSqlTableModel*)));
     connect(m_addeventDialog, SIGNAL(addEventSignal(QString,QString,QString,QString)), &m_DataBase, SLOT(addEvent(QString,QString,QString,QString)));
@@ -56,7 +51,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(m_settingsDialog, SIGNAL(settingsSignal(structSettings*)), &m_eventInformer, SLOT(setSettings(structSettings*)));
     connect(ui->quitButton, SIGNAL(clicked()), qApp, SLOT(quit()));
     connect(m_tray, SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT(trayActivate(QSystemTrayIcon::ActivationReason)));
-    connect(&m_eventInformer, SIGNAL(deleteEventSignal(quint8)), &m_DataBase, SLOT(deleteEvent(quint8)));
+    connect(&m_eventInformer, SIGNAL(eventOccured(quint8)), &m_DataBase, SLOT(markAsOccured(quint8)));
     //timer manager
     connect(&m_DataBase, SIGNAL(comingEvents(QList<events>*)), &m_timerManager, SLOT(updateTimer(QList<events>*)));
     connect(&m_timerManager, SIGNAL(eventOccured(QList<events>*)), &m_eventInformer, SLOT(showEvent(QList<events>*)));

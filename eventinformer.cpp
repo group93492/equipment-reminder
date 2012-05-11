@@ -42,7 +42,7 @@ void eventInformer::showEvent(QList<events> *List)
                     .arg(List->value(i).cabinet)
                     .arg(List->value(i).inf);
             m_form.append(msgString);
-            emit deleteEventSignal(List->value(i).id);
+            emit eventOccured(List->value(i).id);
         }
         m_form.show();
     }

@@ -23,6 +23,7 @@ private:
     QString m_DBName;
     QSqlDatabase m_DataBase;
     quint8 m_id;
+    quint32 checkForWrongRecords();
 
 public:
     explicit DBManager(QObject *parent = 0);
@@ -38,6 +39,7 @@ public slots:
     void addEvent(QString cabinet, QString date, QString time, QString inf);
     void editEvent(quint8 id, QString cabinet, QString date, QString time, QString inf);
     void deleteEvent(quint8 id);
+    void markAsOccured(quint8 id);
     void findComingEvents();
 
 };

@@ -25,7 +25,7 @@ public:
     ~eventInformer();
 
 signals:
-    void deleteEventSignal(quint8 id);
+    void eventOccured(quint8 id);
 
 public slots:
     void showEvent(QList<events> *List);

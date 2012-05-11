@@ -26,11 +26,13 @@ void DBManager::connectToBase()
                     "cabinet TEXT, "
                     "date TEXT, "
                     "time TEXT, "
-                    "inf TEXT "
+                    "inf TEXT, "
+                    "isOccured BOOLEAN"
                     ");";
         QSqlQuery query;
         if(!query.exec(str))
             qDebug() << "Invalid sql query: " << query.lastError().text();
+        query.finish();
     }
     QSqlQuery query;
     QString str = QString("SELECT MAX(id) FROM %1;")
@@ -41,6 +43,8 @@ void DBManager::connectToBase()
     query.next();
     rec = query.record();
     m_id = rec.value(0).toUInt() + 1;
+    query.finish();
+    checkForWrongRecords();
     findComingEvents();
 }
 
@@ -65,34 +69,43 @@ void DBManager::addEvent(QString cabinet, QString date, QString time, QString in
 {
     m_id++;
     QSqlQuery query;
-    QString str = QString("INSERT INTO %1 (id, cabinet, date, time, inf) "
-                          "VALUES ('%2', '%3', '%4', '%5', '%6');")
+    QString str = QString("INSERT INTO %1 (id, cabinet, date, time, inf, isOccured) "
+                          "VALUES ('%2', '%3', '%4', '%5', '%6', '%7');")
             .arg(m_TableName)
             .arg(m_id)
             .arg(cabinet)
             .arg(date)
             .arg(time)
-            .arg(inf);
+            .arg(inf)
+            .arg(0); //set event as NOT occured
     if(!query.exec(str))
         qDebug() << "Invalid sql query: " << query.lastError().text();
+    query.finish();
     sendModel();
     findComingEvents();
 }
 
 void DBManager::editEvent(quint8 id, QString cabinet, QString date, QString time, QString inf)
 {
-    QSqlQuery query;
+    quint8 isOccured = 1;
+    if(QDateTime::currentDateTime() <
+            QDateTime(QDate::fromString(date, "dd.MM.yyyy"), QTime::fromString(time)))
+        isOccured = 0;
     QString str = QString("UPDATE %1 "
-                          "SET cabinet = '%2', date = '%3', time = '%4', inf = '%5' "
-                          "WHERE id = %6;")
+                          "SET cabinet = '%2', date = '%3', time = '%4', "
+                          "inf = '%5', isOccured = '%7' "
+                          "WHERE id = '%6';")
             .arg(m_TableName)
             .arg(cabinet)
             .arg(date)
             .arg(time)
             .arg(inf)
-            .arg(id);
+            .arg(id)
+            .arg(isOccured);
+    QSqlQuery query;
     if(!query.exec(str))
         qDebug() << "Invalid sql query: " << query.lastError().text();
+    query.finish();
     sendModel();
     findComingEvents();
 }
@@ -106,6 +119,20 @@ void DBManager::deleteEvent(quint8 id)
             .arg(id);
     if(!query.exec(str))
         qDebug() << "Invalid sql query: " << query.lastError().text();
+    query.finish();
+    sendModel();
+    findComingEvents();
+}
+
+void DBManager::markAsOccured(quint8 id)
+{
+    QSqlQuery query;
+    QString str = QString("UPDATE %1 SET isOccured = '1' WHERE id = '%2';")
+            .arg(m_TableName)
+            .arg(id);
+    if(!query.exec(str))
+        qDebug() << "Invalid sql query: " << query.lastError().text();
+    query.finish();
     sendModel();
     findComingEvents();
 }
@@ -113,36 +140,64 @@ void DBManager::deleteEvent(quint8 id)
 void DBManager::findComingEvents()
 {
     QSqlQuery query;
-    QSqlRecord rec;
-    QString currentDate = QDate::currentDate().toString("dd.MM.yyyy");
-    QString currentTime = QTime::currentTime().toString("hh:mm:ss");
-    //cleaning table of obsolete records
-    QString str = QString("DELETE FROM %1 WHERE date < '%2' OR (date = '%2' and time < '%3');")
-            .arg(m_TableName)
-            .arg(currentDate)
-            .arg(currentTime);
-    if(!query.exec(str))
-        qDebug() << "Invalid sql query: " << query.lastError().text();
-    str = QString("SELECT * FROM %1 WHERE "
-                  "time = (SELECT MIN(time) FROM %1 WHERE "
-                  "date = (SELECT MIN(date) FROM %1)) and "
-                  "date = (SELECT MIN(date) FROM %1);")
+    if(!query.exec("DROP TABLE IF EXISTS temp;"))
+        qDebug() << "1Invalid sql query: " << query.lastError().text();
+    query.finish();
+    QString str = QString("CREATE TABLE temp AS SELECT * FROM '%1' WHERE isOccured = 0;")
             .arg(m_TableName);
     if(!query.exec(str))
-        qDebug() << "Invalid sql query: " << query.lastError().text();
+        qDebug() << "2Invalid sql query: " << query.lastError().text();
+    query.finish();
+    str = QString("SELECT * FROM temp WHERE "
+                                      "time = (SELECT MIN(time) FROM temp WHERE "
+                                            "date = (SELECT MIN(date) FROM temp)) and "
+                                            "date = (SELECT MIN(date) FROM temp);");
+
+    if(!query.exec(str))
+        qDebug() << "3Invalid sql query: " << query.lastError().text();
     QList<events> *List = new QList<events>;
     events tempEvent;
+    QSqlRecord rec;
     while(query.next())
     {
         rec = query.record();
         tempEvent.id = rec.value(0).toUInt();
         tempEvent.cabinet = rec.value(1).toString();
-        tempEvent.date = QDate::fromString(rec.value(2).toString(), "dd.MM.yyyy"); //DONT FIX!
+        //to.string return wrong type date and we need to convert it manually
+        tempEvent.date = QDate::fromString(rec.value(2).toString(), "dd.MM.yyyy");
         tempEvent.time = rec.value(3).toTime();
         tempEvent.inf = rec.value(4).toString();
         List->append(tempEvent);
     }
+    if(!query.exec("DROP TABLE IF EXISTS temp;"))
+        qDebug() << "4Invalid sql query: " << query.lastError().text();
+    query.finish();
     if(!List->empty())
         emit comingEvents(List);
+    sendModel();
+}
+
+quint32 DBManager::checkForWrongRecords()
+{
+    //check for future events but marked as occured and versa versa
+    QString currentDate = QDate::currentDate().toString("dd.MM.yyyy");
+    QString currentTime = QTime::currentTime().toString("hh:mm:ss");
+    QString str = QString("UPDATE %1 SET isOccured = '1' "
+                          "WHERE date < '%2' OR (date = '%2' and time < '%3');")
+            .arg(m_TableName)
+            .arg(currentDate)
+            .arg(currentTime);
+    QSqlQuery query;
+    if(!query.exec(str))
+        qDebug() << "Invalid sql query: " << query.lastError().text();
+    query.finish();
+    str = QString("UPDATE %1 SET isOccured = '0' "
+                  "WHERE date > '%2' OR (date = '%2' and time > '%3');")
+            .arg(m_TableName)
+            .arg(currentDate)
+            .arg(currentTime);
+    if(!query.exec(str))
+        qDebug() << "Invalid sql query: " << query.lastError().text();
+    query.finish();
     sendModel();
 }
