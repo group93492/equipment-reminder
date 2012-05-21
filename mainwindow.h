@@ -37,7 +37,7 @@ protected:
     virtual void closeEvent(QCloseEvent *event);
 
 private slots:
-    void lookTable(QSqlTableModel *model);
+    void lookTable(QAbstractTableModel *model);
     void on_addeventButton_clicked();
     void on_tableView_clicked(const QModelIndex &index);
     void on_editeventButton_clicked();
@@ -46,8 +46,13 @@ private slots:
     void trayActivate(QSystemTrayIcon::ActivationReason reason);
     void hideTray();
 
+    void on_showOccuredCheckBox_clicked();
+
 signals:
     void deleteEventSignal(quint8 id);
+    void showAllEvents();
+    void showNotOccuredEvents();
+    void showOnlyOccuredEvents();
 
 };
 

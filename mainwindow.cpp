@@ -43,7 +43,7 @@ MainWindow::MainWindow(QWidget *parent) :
     //about menu
     menuAbout->addAction(QString::fromLocal8Bit("О Qt"), qApp, SLOT(aboutQt()));
     //connect section
-    connect(&m_DataBase, SIGNAL(tableModel(QSqlTableModel*)), this, SLOT(lookTable(QSqlTableModel*)));
+    connect(&m_DataBase, SIGNAL(tableModel(QAbstractTableModel*)), this, SLOT(lookTable(QAbstractTableModel*)));
     connect(m_addeventDialog, SIGNAL(addEventSignal(QString,QString,QString,QString)), &m_DataBase, SLOT(addEvent(QString,QString,QString,QString)));
     connect(m_editeventDialog, SIGNAL(editEventSignal(quint8,QString,QString,QString,QString)), &m_DataBase, SLOT(editEvent(quint8,QString,QString,QString,QString)));
     connect(this, SIGNAL(deleteEventSignal(quint8)), &m_DataBase, SLOT(deleteEvent(quint8)));
@@ -52,6 +52,10 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->quitButton, SIGNAL(clicked()), qApp, SLOT(quit()));
     connect(m_tray, SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT(trayActivate(QSystemTrayIcon::ActivationReason)));
     connect(&m_eventInformer, SIGNAL(eventOccured(quint8)), &m_DataBase, SLOT(markAsOccured(quint8)));
+    //connect change showed events (all/not occured/occured)
+    connect(this, SIGNAL(showAllEvents()), &m_DataBase, SLOT(showAllEvents()));
+    connect(this, SIGNAL(showNotOccuredEvents()), &m_DataBase, SLOT(showNotOccuredEvents()));
+    connect(this, SIGNAL(showOnlyOccuredEvents()), &m_DataBase, SLOT(showOnlyOccuredEvents()));
     //timer manager
     connect(&m_DataBase, SIGNAL(comingEvents(QList<events>*)), &m_timerManager, SLOT(updateTimer(QList<events>*)));
     connect(&m_timerManager, SIGNAL(eventOccured(QList<events>*)), &m_eventInformer, SLOT(showEvent(QList<events>*)));
@@ -67,7 +71,6 @@ MainWindow::MainWindow(QWidget *parent) :
     m_eventInformer.setSettings(settings);
     m_DataBase.setSettings(settings);
     m_DataBase.connectToBase();
-    m_DataBase.sendModel();
     ui->tableView->hideColumn(0);
 }
 
@@ -89,7 +92,7 @@ void MainWindow::closeEvent(QCloseEvent *event)
     event->accept();
 }
 
-void MainWindow::lookTable(QSqlTableModel *model)
+void MainWindow::lookTable(QAbstractTableModel *model)
 {
     model->sort(ui->comboBox->currentIndex()+1, Qt::AscendingOrder);
     ui->tableView->setModel(model);
@@ -152,4 +155,25 @@ void MainWindow::hideTray()
 {
     m_tray->hide();
     this->show();
+}
+
+void MainWindow::on_showOccuredCheckBox_clicked()
+{
+    static Qt::CheckState previousCheckState = Qt::Checked;
+    if(ui->showOccuredCheckBox->checkState() != previousCheckState)
+        switch(ui->showOccuredCheckBox->checkState())
+        {
+        case Qt::Checked://show all events
+            emit showAllEvents();
+            previousCheckState = Qt::Checked;
+            break;
+        case Qt::PartiallyChecked://show only future events
+            emit showNotOccuredEvents();
+            previousCheckState = Qt::PartiallyChecked;
+            break;
+        case Qt::Unchecked://show only occured events
+            emit showOnlyOccuredEvents();
+            previousCheckState = Qt::Unchecked;
+            break;
+        }
 }

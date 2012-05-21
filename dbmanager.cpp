@@ -4,6 +4,7 @@ DBManager::DBManager(QObject *parent) :
     QObject(parent)
 {
     m_DataBase = QSqlDatabase::addDatabase("QSQLITE");
+    m_sendModelType = enumShowAllEvents;
 }
 
 void DBManager::connectToBase()
@@ -46,6 +47,7 @@ void DBManager::connectToBase()
     query.finish();
     checkForWrongRecords();
     findComingEvents();
+    sendModel();
 }
 
 void DBManager::setSettings(structSettings *s)
@@ -58,17 +60,34 @@ void DBManager::setSettings(structSettings *s)
 
 void DBManager::sendModel()
 {
-    QSqlTableModel *model = new QSqlTableModel;
-    model->setTable(m_TableName);
-    model->select();
-    model->setEditStrategy(QSqlTableModel::OnFieldChange);
+    switch(m_sendModelType)
+    {
+    case enumShowAllEvents:
+        showAllEvents();
+        break;
+    case enumShowOnlyOccuredEvents:
+        showOnlyOccuredEvents();
+        break;
+    case enumShowNotOccuredEvents:
+        showNotOccuredEvents();
+        break;
+    }
+}
+
+void DBManager::sendModel(const QSqlQuery &query)
+{
+    QSqlQueryModel *model = new QSqlQueryModel;
+    model->setQuery(query);
     emit tableModel(model);
 }
 
 void DBManager::addEvent(QString cabinet, QString date, QString time, QString inf)
 {
     m_id++;
-    QSqlQuery query;
+    quint8 isOccured = 1;
+    if(QDateTime::currentDateTime() <
+            QDateTime(QDate::fromString(date, "dd.MM.yyyy"), QTime::fromString(time)))
+        isOccured = 0;
     QString str = QString("INSERT INTO %1 (id, cabinet, date, time, inf, isOccured) "
                           "VALUES ('%2', '%3', '%4', '%5', '%6', '%7');")
             .arg(m_TableName)
@@ -77,7 +96,8 @@ void DBManager::addEvent(QString cabinet, QString date, QString time, QString in
             .arg(date)
             .arg(time)
             .arg(inf)
-            .arg(0); //set event as NOT occured
+            .arg(isOccured); //set event as NOT occured
+    QSqlQuery query;
     if(!query.exec(str))
         qDebug() << "Invalid sql query: " << query.lastError().text();
     query.finish();
@@ -137,6 +157,39 @@ void DBManager::markAsOccured(quint8 id)
     findComingEvents();
 }
 
+void DBManager::showAllEvents()
+{
+    m_sendModelType = enumShowAllEvents;
+    QSqlQuery query;
+    QString str = QString("SELECT * FROM '%1';")
+            .arg(m_TableName);
+    if(!query.exec(str))
+        qDebug() << "Invalid sql query: " << query.lastError().text();
+    sendModel(query);
+}
+
+void DBManager::showOnlyOccuredEvents()
+{
+    m_sendModelType = enumShowOnlyOccuredEvents;
+    QSqlQuery query;
+    QString str = QString("SELECT * FROM '%1' WHERE isOccured = '1';")
+            .arg(m_TableName);
+    if(!query.exec(str))
+        qDebug() << "Invalid sql query: " << query.lastError().text();
+    sendModel(query);
+}
+
+void DBManager::showNotOccuredEvents()
+{
+    m_sendModelType = enumShowNotOccuredEvents;
+    QSqlQuery query;
+    QString str = QString("SELECT * FROM '%1' WHERE isOccured = '0';")
+            .arg(m_TableName);
+    if(!query.exec(str))
+        qDebug() << "Invalid sql query: " << query.lastError().text();
+    sendModel(query);
+}
+
 void DBManager::findComingEvents()
 {
     QSqlQuery query;
@@ -177,7 +230,7 @@ void DBManager::findComingEvents()
     sendModel();
 }
 
-quint32 DBManager::checkForWrongRecords()
+void DBManager::checkForWrongRecords()
 {
     //check for future events but marked as occured and versa versa
     QString currentDate = QDate::currentDate().toString("dd.MM.yyyy");

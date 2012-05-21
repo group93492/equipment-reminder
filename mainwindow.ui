@@ -148,6 +148,26 @@
               </property>
              </item>
             </widget>
+            <widget class="QCheckBox" name="showOccuredCheckBox">
+             <property name="geometry">
+              <rect>
+               <x>10</x>
+               <y>70</y>
+               <width>121</width>
+               <height>81</height>
+              </rect>
+             </property>
+             <property name="text">
+              <string>Показывать
+прошедшие</string>
+             </property>
+             <property name="checked">
+              <bool>true</bool>
+             </property>
+             <property name="tristate">
+              <bool>true</bool>
+             </property>
+            </widget>
            </widget>
           </item>
          </layout>
