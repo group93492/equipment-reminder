@@ -9,7 +9,6 @@ DBManager::DBManager(QObject *parent) :
 
 void DBManager::connectToBase()
 {
-
     QFile file(m_DBName);
     if(file.exists())
     {
@@ -56,6 +55,7 @@ void DBManager::setSettings(structSettings *s)
         m_DataBase.close();
     m_DBName = s->DBPath;
     m_TableName = s->TableName;
+    //connectToBase();
 }
 
 void DBManager::sendModel()

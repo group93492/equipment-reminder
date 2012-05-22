@@ -70,7 +70,6 @@ MainWindow::MainWindow(QWidget *parent) :
     m_settingsDialog->setSettings(settings);
     m_eventInformer.setSettings(settings);
     m_DataBase.setSettings(settings);
-    m_DataBase.connectToBase();
     ui->tableView->hideColumn(0);
 }
 
